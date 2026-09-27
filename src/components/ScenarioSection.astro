@@ -1,0 +1,272 @@
+---
+import { pillarByNo, scenario } from "../content/site";
+import AreaGlyph from "./AreaGlyph.astro";
+import { url } from "../lib/url";
+import ScenarioDiagram from "./ScenarioDiagram.astro";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="scenario"
+  class="section scenario"
+  data-section="03"
+  data-label="When the problem crosses boundaries"
+  aria-labelledby="scenario-title"
+>
+  <div class="page">
+    <SectionRule
+      no="03"
+      title="When the problem crosses boundaries"
+      aside="Illustrative scenario"
+    />
+
+    <div class="grid scenario__intro">
+      <h2 id="scenario-title" class="display scenario__title" data-reveal>
+        {scenario.heading}
+      </h2>
+      <p class="scenario__lede" data-reveal style="--reveal-i:1">
+        {scenario.intro}
+      </p>
+    </div>
+
+    <p class="scenario__problem" data-reveal>
+      <span class="mono-s scenario__problem-k">Illustrative business problem</span>
+      <span class="display scenario__problem-v">{scenario.problem}</span>
+    </p>
+
+    <figure class="scenario__figure" aria-labelledby="scenario-fig-caption">
+      <div class="scenario__plate">
+        <ScenarioDiagram />
+      </div>
+      <figcaption id="scenario-fig-caption" class="scenario__caption">
+        <span class="mono-s">
+          {scenario.figure.label} — {scenario.figure.title}
+        </span>
+        <span>{scenario.figure.caption}</span>
+      </figcaption>
+    </figure>
+
+    <ol class="steps">
+      {scenario.steps.map((s, i) => {
+        const p = pillarByNo(s.layer);
+        return (
+          <li class="step" data-reveal style={`--reveal-i:${i % 4}`}>
+            <span class="step__no mono" aria-hidden="true">
+              {s.no}
+            </span>
+            <p class="step__text">{s.text}</p>
+            <a class="step__layer mono-s" href={url(`/capabilities#${p.slug}`)}>
+              <span class="step__layer-no">{p.no}</span> {p.name}
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+
+    <div class="others">
+      <h3 class="mono others__k">{scenario.others.heading}</h3>
+      <ul class="others__list">
+        {scenario.others.items.map((o, i) => (
+          <li class="other" data-reveal style={`--reveal-i:${i}`}>
+            <AreaGlyph active={o.areas} />
+            <p class="other__text">{o.text}</p>
+            <p class="other__areas mono-s">
+              {o.areas.map((no) => pillarByNo(no).name).join(" + ")}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .scenario__intro {
+    margin-block: var(--s-8) var(--s-7);
+    row-gap: var(--s-4);
+    align-items: end;
+  }
+  .scenario__title {
+    grid-column: 1 / span 7;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .scenario__lede {
+    grid-column: 8 / -1;
+    color: var(--graphite);
+  }
+
+  .scenario__problem {
+    display: grid;
+    gap: var(--s-2);
+    margin-block-end: var(--s-6);
+    padding-inline-start: var(--s-4);
+    border-inline-start: 2px solid var(--signal);
+  }
+  .scenario__problem-k {
+    color: var(--graphite);
+  }
+  .scenario__problem-v {
+    font-size: var(--fs-display-s);
+    line-height: 1.2;
+  }
+
+  .scenario__plate {
+    padding-block: var(--s-6);
+    border-block: var(--hair) solid var(--rule);
+  }
+  .scenario__caption {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding-block-start: var(--s-3);
+    color: var(--graphite);
+    font-size: var(--fs-small);
+  }
+  .scenario__caption > :first-child {
+    grid-column: 1 / span 3;
+  }
+  .scenario__caption > :last-child {
+    grid-column: 4 / span 7;
+  }
+
+  .steps {
+    margin-block-start: var(--s-8);
+    border-block-end: var(--hair) solid var(--rule);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: baseline;
+    padding-block: var(--s-4);
+    border-block-start: var(--hair) solid var(--rule);
+  }
+  .step__no {
+    grid-column: 1 / span 1;
+    color: var(--signal-text);
+  }
+  .step__text {
+    grid-column: 2 / span 6;
+  }
+  .step__layer {
+    grid-column: 9 / -1;
+    justify-self: start;
+    color: var(--graphite);
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 var(--hair);
+    transition: background-size var(--t-med) var(--ease-out);
+  }
+  .step__layer:hover,
+  .step__layer:focus-visible {
+    background-size: 100% var(--hair);
+    color: var(--ink);
+  }
+  .step__layer-no {
+    color: var(--signal-text);
+  }
+
+  .others {
+    margin-block-start: var(--s-9);
+  }
+  .others__k {
+    padding-block-end: var(--s-3);
+    border-block-end: var(--hair) solid var(--ink);
+    font-weight: 400;
+  }
+  .others__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gutter);
+  }
+  .other {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding-block: var(--s-5);
+  }
+  .other__text {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+  .other__areas {
+    color: var(--graphite);
+  }
+
+  @media (max-width: 63.99em) {
+    .scenario__figure {
+      display: none;
+    }
+    .scenario__title,
+    .scenario__lede {
+      grid-column: 1 / span 10;
+    }
+    .others__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .steps {
+      margin-block-start: var(--s-6);
+      border-block-end: 0;
+    }
+    /* The scenario as a vertical rail */
+    .step {
+      position: relative;
+      border-block-start: 0;
+      padding-block: 0 var(--s-6);
+    }
+    .step::before {
+      content: "";
+      position: absolute;
+      left: calc(0.75rem - 1px);
+      top: 1.75rem;
+      bottom: 0;
+      width: 2px;
+      background: var(--signal);
+    }
+    .step:last-child::before {
+      display: none;
+    }
+    .step__no {
+      grid-column: 1 / span 2;
+      display: grid;
+      place-items: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-weight: 500;
+    }
+    .step__text,
+    .step__layer {
+      grid-column: 3 / -1;
+    }
+    .step__layer {
+      margin-block-start: var(--s-2);
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .scenario__title,
+    .scenario__lede {
+      grid-column: 1 / -1;
+    }
+    .others__list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+    .other {
+      grid-template-columns: auto 1fr;
+      column-gap: var(--s-4);
+      border-block-end: var(--hair) solid var(--rule);
+    }
+    .other :global(.aglyph) {
+      grid-row: 1 / span 2;
+      width: 6.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+/**
+ * Provisional typographic wordmark (no logo mark until one is approved). Serif name, mono descriptor.
+ */
+interface Props {
+  size?: "s" | "l";
+}
+const { size = "s" } = Astro.props;
+---
+
+<span class:list={["wordmark", `wordmark--${size}`]}>
+  <span class="wordmark__name">Resiper</span> <span class="wordmark__labs">Labs</span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    white-space: nowrap;
+  }
+  .wordmark__name {
+    font-family: var(--font-display);
+    font-weight: 460;
+    font-size: 1.5rem;
+    letter-spacing: -0.015em;
+    line-height: 1;
+  }
+  .wordmark__labs {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .wordmark--l .wordmark__name {
+    font-size: clamp(2.5rem, 1.5rem + 5vw, 6.5rem);
+    font-weight: 380;
+    letter-spacing: -0.025em;
+  }
+  .wordmark--l .wordmark__labs {
+    font-size: clamp(0.75rem, 0.6rem + 0.5vw, 1rem);
+  }
+</style>

@@ -1,0 +1,272 @@
+---
+import { method, methodIntro } from "../content/site";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="method"
+  class="method"
+  data-section="05"
+  data-label="How we work"
+  data-plate
+  aria-labelledby="method-title"
+>
+  <div class="page">
+    <SectionRule no="05" title="How we work" aside="Understand · Architect · Build · Measure" />
+
+    <div class="grid method__intro">
+      <h2 id="method-title" class="display method__title" data-reveal>
+        {methodIntro.heading}
+      </h2>
+      <p class="method__lede" data-reveal style="--reveal-i:1">
+        {methodIntro.lede}
+      </p>
+    </div>
+
+    <figure class="method__figure" aria-labelledby="method-fig-caption">
+      <div class="method__io mono-s" aria-hidden="true">
+        <span>{methodIntro.io[0]}</span>
+        <span>{methodIntro.io[1]}</span>
+      </div>
+
+      <ol class="stations">
+        {method.map((s, i) => (
+          <li class="station" data-reveal style={`--reveal-i:${i}`}>
+            <span class="station__rail" aria-hidden="true">
+              <span class="station__mark" />
+            </span>
+            <span class="station__no mono">{s.no}</span>
+            <h3 class="station__name display">{s.name}</h3>
+            <p class="station__text">{s.text}</p>
+            <p class="station__output">
+              <span class="mono-s">Output</span>
+              <span>{s.output}</span>
+            </p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="method__return" aria-hidden="true">
+        <span class="method__return-line"></span>
+        <span class="mono-s method__return-label">{methodIntro.loop}</span>
+      </div>
+
+      <figcaption id="method-fig-caption" class="method__caption">
+        <span class="mono-s">Fig. 2 — How we work</span>
+        <span>
+          Four steps from a business need to a verified result. What is measured at the end shapes
+          what happens next.
+        </span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .method {
+    margin-block-start: var(--section-gap);
+    padding-block: var(--s-8) var(--s-9);
+    background: var(--plate);
+    color: var(--plate-ink);
+    --ink: var(--plate-ink);
+    --graphite: var(--plate-graphite);
+    --rule: var(--plate-rule);
+    --rule-strong: var(--plate-graphite);
+    --signal: var(--plate-signal);
+    --signal-text: var(--plate-signal);
+    --paper: var(--plate);
+  }
+  .method ::selection {
+    background: var(--plate-signal);
+    color: var(--plate);
+  }
+
+  .method__intro {
+    margin-block: var(--s-8) var(--s-9);
+    row-gap: var(--s-5);
+  }
+  .method__title {
+    grid-column: 3 / span 7;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .method__lede {
+    grid-column: 3 / span 5;
+    color: var(--graphite);
+    font-size: var(--fs-lede);
+    line-height: 1.5;
+  }
+
+  .method__io {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    color: var(--graphite);
+    padding-block-end: var(--s-3);
+  }
+
+  .stations {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-7);
+  }
+  .station {
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: var(--s-3);
+  }
+  .station__rail {
+    position: relative;
+    display: block;
+    height: 12px;
+    margin-block-end: var(--s-3);
+    margin-inline-end: calc(var(--gutter) * -1);
+  }
+  .station:last-child .station__rail {
+    margin-inline-end: 0;
+  }
+  .station__rail::before {
+    content: "";
+    position: absolute;
+    inset: 50% 0 auto;
+    height: var(--hair);
+    background: var(--plate-ink);
+  }
+  .station:last-child .station__rail::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-top: var(--hair) solid var(--plate-ink);
+    border-right: var(--hair) solid var(--plate-ink);
+    transform: translate(0, -50%) rotate(45deg);
+    transform-origin: 50% 50%;
+  }
+  .station__mark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--plate);
+    border: 1.5px solid var(--plate-ink);
+  }
+  .station:first-child .station__mark {
+    background: var(--plate-signal);
+    border-color: var(--plate-signal);
+  }
+  .station__no {
+    color: var(--plate-signal);
+  }
+  .station__name {
+    font-size: var(--fs-display-s);
+    line-height: 1.1;
+  }
+  .station__text {
+    color: var(--graphite);
+    font-size: var(--fs-small);
+    max-width: 34ch;
+  }
+  .station__output {
+    display: grid;
+    gap: var(--s-1);
+    padding-block-start: var(--s-3);
+    border-block-start: var(--hair) dashed var(--plate-rule);
+    font-size: var(--fs-small);
+  }
+  .station__output .mono-s {
+    color: var(--graphite);
+  }
+
+  .method__return {
+    position: relative;
+    margin-block-start: var(--s-6);
+    padding-block-start: var(--s-6);
+  }
+  .method__return-line {
+    position: absolute;
+    inset: 0 5px auto 5px;
+    height: var(--s-6);
+    border: var(--hair) dashed var(--plate-graphite);
+    border-top: 0;
+  }
+  .method__return-line::before {
+    /* arrowhead pointing up into stage 01 */
+    content: "";
+    position: absolute;
+    left: -4.5px;
+    top: -2px;
+    width: 8px;
+    height: 8px;
+    border-left: var(--hair) solid var(--plate-graphite);
+    border-top: var(--hair) solid var(--plate-graphite);
+    transform: rotate(45deg);
+  }
+  .method__return-label {
+    position: relative;
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin-inline: auto;
+    margin-block-start: calc(var(--s-6) * -1 + var(--s-6) - 0.75em);
+    padding-inline: var(--s-3);
+    background: var(--plate);
+    color: var(--graphite);
+    text-align: center;
+  }
+
+  .method__caption {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    margin-block-start: var(--s-7);
+    padding-block-start: var(--s-3);
+    border-block-start: var(--hair) solid var(--plate-rule);
+    color: var(--graphite);
+    font-size: var(--fs-small);
+  }
+  .method__caption > :first-child {
+    grid-column: 1 / span 3;
+  }
+  .method__caption > :last-child {
+    grid-column: 4 / span 6;
+  }
+
+  @media (max-width: 63.99em) {
+    .stations {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .station:nth-child(2) .station__rail {
+      margin-inline-end: 0;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .method__title,
+    .method__lede {
+      grid-column: 1 / -1;
+    }
+    .stations {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--s-7);
+    }
+    .station__rail {
+      margin-inline-end: 0;
+    }
+    .method__io {
+      display: none;
+    }
+    .method__return-label {
+      width: auto;
+    }
+    .method__caption > :first-child,
+    .method__caption > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

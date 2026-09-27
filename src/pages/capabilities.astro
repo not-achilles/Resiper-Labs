@@ -1,0 +1,451 @@
+---
+import Base from "../layouts/Base.astro";
+import AreaGlyph from "../components/AreaGlyph.astro";
+import SectionRule from "../components/SectionRule.astro";
+import { capabilitiesPage, pillarByNo, pillars } from "../content/site";
+import { url } from "../lib/url";
+---
+
+<Base title={capabilitiesPage.title} description={capabilitiesPage.description}>
+  <section class="cap-hero" data-section="00" data-label="Capabilities" aria-labelledby="cap-title">
+    <div class="page">
+      <div class="grid cap-hero__grid">
+        <p class="mono cap-hero__kicker">Capabilities</p>
+        <h1 id="cap-title" class="display cap-hero__title">
+          {capabilitiesPage.heading}
+        </h1>
+        <p class="lede cap-hero__intro">{capabilitiesPage.intro}</p>
+        <p class="cap-hero__cycle mono">
+          <span class="muted cap-hero__cycle-k">In every area</span>
+          {capabilitiesPage.lifecycle.map((s, i) => (
+            <span class="cap-hero__step">
+              {s}
+              {i < capabilitiesPage.lifecycle.length - 1 && (
+                <span class="cap-hero__dot" aria-hidden="true">
+                  ·
+                </span>
+              )}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      <nav class="jump" aria-label="Capability areas">
+        <ol>
+          {pillars.map((p) => (
+            <li>
+              <a href={`#${p.slug}`} class="jump__link">
+                <span class="jump__no mono">{p.no}</span>{" "}
+                <span class="jump__name display">{p.name}</span>{" "}
+                <span class="jump__line">{p.line}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  {pillars.map((p) => (
+    <section
+      id={p.slug}
+      class="section area"
+      data-section={p.no}
+      data-label={p.name}
+      aria-labelledby={`${p.slug}-title`}
+    >
+      <div class="page">
+        <SectionRule no={p.no} title={p.name} aside={`Capability area ${p.no} of 06`} />
+        <div class="grid area__grid">
+          <div class="area__side">
+            <h2 id={`${p.slug}-title`} class="display area__title" data-reveal>
+              {p.name}
+            </h2>
+            <p class="area__line" data-reveal style="--reveal-i:1">
+              {p.line}
+            </p>
+            <div class="area__glyph">
+              <AreaGlyph active={[p.no]} related={p.related.map((r) => r.no)} />
+              <p class="mono-s muted area__legend">
+                <span class="area__legend-on" aria-hidden="true" /> This area
+                <span class="area__legend-rel" aria-hidden="true" /> Often combined with
+              </p>
+            </div>
+          </div>
+
+          <div class="area__main">
+            <div class="area__block">
+              <h3 class="mono-s muted">Problem area</h3>
+              <p class="area__problem display" data-reveal>
+                {p.problem}
+              </p>
+            </div>
+
+            <div class="area__block">
+              <h3 class="mono-s muted">What we do</h3>
+              <p class="lede area__intro">{p.intro}</p>
+            </div>
+
+            <div class="area__groups">
+              {p.groups.map((grp, gi) => (
+                <div class="area__group" data-reveal style={`--reveal-i:${gi % 3}`}>
+                  <h4 class="mono area__gtitle">
+                    <span class="area__gno" aria-hidden="true">
+                      {p.no}.{gi + 1}
+                    </span>
+                    {grp.title}
+                  </h4>
+                  <ul>
+                    {grp.items.map((it) => (
+                      <li>{it}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div class="area__block">
+              <h3 class="mono-s muted">Typical technology areas</h3>
+              <p class="area__tech">
+                {p.keywords.map((k, i) => (
+                  <span class="area__techk">
+                    {k}
+                    {i < p.keywords.length - 1 && (
+                      <span class="area__dot" aria-hidden="true">
+                        ·
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </p>
+              {p.platforms && <p class="area__platforms mono-s">Platforms: {p.platforms}</p>}
+            </div>
+
+            <div class="area__block">
+              <h3 class="mono-s muted">Often combined with</h3>
+              <ul class="area__related">
+                {p.related.map((r) => {
+                  const c = pillarByNo(r.no);
+                  return (
+                    <li>
+                      <a class="link area__rlink" href={`#${c.slug}`}>
+                        <span class="area__rno mono-s">{c.no}</span> {c.name}
+                      </a>
+                      <span class="area__why">{r.why}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p class="mono-s muted area__note">
+                Combined only when the problem needs it. This area is also engaged on its own.
+              </p>
+            </div>
+
+            <div class="area__block">
+              <h3 class="mono-s muted">Typical starting points</h3>
+              <ul class="area__starts">
+                {p.starts.map((s) => (
+                  <li>{s}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section cap-next" data-section="—" data-label="Next">
+    <div class="page grid">
+      <p class="display cap-next__text">
+        Not sure which area the problem sits in? Working that out is usually the first thing we do
+        together.
+      </p>
+      <p class="cap-next__links">
+        <a class="link mono" href={url("/#engage")}>
+          How we engage{" "}
+          <span class="link__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+        <a class="link mono" href={url("/#contact")}>
+          Start a conversation{" "}
+          <span class="link__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cap-hero {
+    padding-block-start: clamp(var(--s-6), 6vh, var(--s-8));
+  }
+  .cap-hero__grid {
+    row-gap: var(--s-6);
+  }
+  .cap-hero__kicker {
+    grid-column: 1 / -1;
+    color: var(--signal-text);
+  }
+  .cap-hero__title {
+    grid-column: 1 / span 10;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .cap-hero__intro {
+    grid-column: 1 / span 6;
+  }
+  .cap-hero__cycle {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) 0.9em;
+    padding-block-start: var(--s-3);
+    border-block-start: var(--hair) solid var(--rule);
+  }
+  .cap-hero__cycle-k {
+    margin-inline-end: var(--s-4);
+  }
+  .cap-hero__step {
+    white-space: nowrap;
+  }
+  .cap-hero__dot {
+    margin-inline-start: 0.9em;
+    color: var(--signal);
+  }
+
+  .jump {
+    margin-block-start: var(--s-8);
+  }
+  .jump ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    border-block-start: var(--hair) solid var(--ink);
+  }
+  .jump li {
+    border-block-end: var(--hair) solid var(--rule);
+  }
+  .jump__link {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    column-gap: var(--s-2);
+    row-gap: var(--s-1);
+    padding-block: var(--s-4) var(--s-5);
+  }
+  .jump__no {
+    color: var(--signal-text);
+    grid-row: 1 / span 2;
+  }
+  .jump__name {
+    font-size: 1.35rem;
+    line-height: 1.15;
+    transition: transform var(--t-med) var(--ease-out);
+  }
+  .jump__line {
+    color: var(--graphite);
+    font-size: var(--fs-small);
+    line-height: 1.45;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .jump__link:hover .jump__name {
+      transform: translateX(0.3rem);
+    }
+  }
+
+  .area__grid {
+    margin-block-start: var(--s-7);
+    row-gap: var(--s-7);
+    align-items: start;
+  }
+  .area__side {
+    grid-column: 1 / span 4;
+    display: grid;
+    gap: var(--s-5);
+    position: sticky;
+    top: var(--s-6);
+  }
+  .area__title {
+    font-size: var(--fs-display-m);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 360;
+  }
+  .area__line {
+    color: var(--graphite);
+  }
+  .area__glyph {
+    display: grid;
+    gap: var(--s-3);
+    padding-block-start: var(--s-4);
+    border-block-start: var(--hair) solid var(--rule);
+  }
+  .area__legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .area__legend-on,
+  .area__legend-rel {
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+  .area__legend-on {
+    background: var(--signal);
+  }
+  .area__legend-rel {
+    margin-inline-start: var(--s-3);
+    border: 1.25px solid var(--ink);
+  }
+
+  .area__main {
+    grid-column: 6 / -1;
+    display: grid;
+    gap: var(--s-7);
+  }
+  .area__block h3 {
+    font-weight: 400;
+    margin-block-end: var(--s-3);
+  }
+  .area__problem {
+    font-size: var(--fs-display-s);
+    line-height: 1.25;
+    max-width: 34ch;
+  }
+  .area__intro {
+    max-width: 40rem;
+  }
+
+  .area__groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-7) var(--gutter);
+  }
+  .area__gtitle {
+    display: flex;
+    gap: 0.8em;
+    font-weight: 400;
+    padding-block-end: var(--s-2);
+    margin-block-end: var(--s-2);
+    border-block-end: var(--hair) solid var(--ink);
+  }
+  .area__gno {
+    color: var(--signal-text);
+  }
+  .area__group li {
+    padding-block: 0.45em;
+    border-block-end: var(--hair) solid var(--rule);
+    font-size: var(--fs-small);
+  }
+
+  .area__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em 0.6em;
+  }
+  .area__techk {
+    white-space: nowrap;
+  }
+  .area__dot {
+    margin-inline-start: 0.6em;
+    color: var(--rule-strong);
+  }
+  .area__platforms {
+    margin-block-start: var(--s-3);
+    color: var(--graphite);
+  }
+
+  .area__related {
+    border-block-start: var(--hair) solid var(--rule);
+  }
+  .area__related li {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--s-1) var(--gutter);
+    align-items: baseline;
+    padding-block: var(--s-3);
+    border-block-end: var(--hair) solid var(--rule);
+    font-size: var(--fs-small);
+  }
+  .area__rlink {
+    justify-self: start;
+  }
+  .area__rno {
+    color: var(--signal-text);
+  }
+  .area__why {
+    color: var(--graphite);
+  }
+  .area__note {
+    margin-block-start: var(--s-3);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .area__starts li {
+    position: relative;
+    padding-inline-start: 1.4em;
+    padding-block: 0.3em;
+    font-size: var(--fs-small);
+  }
+  .area__starts li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--signal-text);
+    font-family: var(--font-mono);
+  }
+
+  .cap-next__text {
+    grid-column: 1 / span 8;
+    font-size: var(--fs-display-m);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 360;
+  }
+  .cap-next__links {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+    margin-block-start: var(--s-6);
+  }
+
+  @media (max-width: 63.99em) {
+    .jump ol {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .area__side {
+      grid-column: 1 / -1;
+      position: static;
+    }
+    .area__main {
+      grid-column: 1 / -1;
+    }
+    .cap-hero__intro {
+      grid-column: 1 / span 9;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .cap-hero__title,
+    .cap-hero__intro,
+    .cap-next__text {
+      grid-column: 1 / -1;
+    }
+    .jump ol,
+    .area__groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .area__related li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

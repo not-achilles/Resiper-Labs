@@ -1,0 +1,80 @@
+---
+/**
+ * The six areas in miniature (same plan view as the hero). Active areas are
+ * filled; related areas (often combined with) are outlined in ink.
+ */
+import { pillarByNo, type PillarNo } from "../content/site";
+import { zones } from "../lib/areas";
+
+interface Props {
+  active: PillarNo[];
+  related?: PillarNo[];
+}
+const { active, related = [] } = Astro.props;
+
+const W = 132;
+const H = 64;
+const GAP = 3;
+const list = zones("wide", W, H, GAP);
+const label =
+  `${active.map((no) => pillarByNo(no).name).join(" and ")}` +
+  (related.length
+    ? `; often combined with ${related.map((no) => pillarByNo(no).name).join(", ")}`
+    : "");
+---
+
+<span class="aglyph" role="img" aria-label={label}>
+  <svg viewBox={`-1 -1 ${W + 2} ${H + 2}`} aria-hidden="true" focusable="false">
+    {list.map((z) => {
+      const state = active.includes(z.no) ? "on" : related.includes(z.no) ? "rel" : "off";
+      return (
+        <g class={`aglyph__cell aglyph__cell--${state}`}>
+          <rect x={z.x} y={z.y} width={z.w} height={z.h} />
+          <text x={z.x + 6} y={z.y + 13}>
+            {z.no}
+          </text>
+        </g>
+      );
+    })}
+  </svg>
+</span>
+
+<style>
+  .aglyph {
+    display: inline-block;
+    width: 9.5rem;
+  }
+  .aglyph svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .aglyph text {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.04em;
+  }
+  .aglyph__cell--off rect {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .aglyph__cell--off text {
+    fill: var(--graphite);
+  }
+  .aglyph__cell--rel rect {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.25;
+  }
+  .aglyph__cell--rel text {
+    fill: var(--ink);
+  }
+  .aglyph__cell--on rect {
+    fill: var(--signal);
+    stroke: var(--signal);
+  }
+  .aglyph__cell--on text {
+    fill: var(--paper);
+  }
+</style>

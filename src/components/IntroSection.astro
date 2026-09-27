@@ -1,0 +1,119 @@
+---
+import { intro } from "../content/site";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="about"
+  class="section intro"
+  data-section="01"
+  data-label="Introduction"
+  aria-labelledby="intro-title"
+>
+  <div class="page">
+    <SectionRule no="01" title="Introduction" aside="What Resiper Labs does" />
+
+    <div class="grid intro__body">
+      <h2 id="intro-title" class="display intro__title" data-reveal>
+        {intro.heading}
+      </h2>
+      <div class="intro__text">
+        {intro.body.map((p, i) => (
+          <p data-reveal style={`--reveal-i:${i + 1}`}>
+            {p}
+          </p>
+        ))}
+      </div>
+      <div class="intro__modes">
+        <p class="mono-s muted intro__modes-k">How clients work with us</p>
+        <dl class="intro__list">
+          {intro.modes.map((m, i) => (
+            <div class="intro__mode" data-reveal style={`--reveal-i:${i}`}>
+              <dt class="mono">
+                <span class="intro__idx" aria-hidden="true">
+                  {String.fromCharCode(97 + i)}
+                </span>
+                {m.k}
+              </dt>
+              <dd>{m.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro__body {
+    margin-block-start: var(--s-8);
+    row-gap: var(--s-7);
+  }
+  .intro__title {
+    grid-column: 1 / span 9;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .intro__text {
+    grid-column: 5 / span 6;
+    display: grid;
+    gap: var(--s-4);
+  }
+  .intro__text p:first-child {
+    font-size: var(--fs-lede);
+    line-height: 1.5;
+  }
+  .intro__text p + p {
+    color: var(--graphite);
+  }
+
+  .intro__modes {
+    grid-column: 5 / -1;
+  }
+  .intro__modes-k {
+    margin-block-end: var(--s-3);
+  }
+  .intro__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gutter);
+    margin: 0;
+  }
+  .intro__mode {
+    padding-block-start: var(--s-3);
+    border-block-start: var(--hair) solid var(--ink);
+  }
+  .intro__mode dt {
+    display: flex;
+    gap: 0.8em;
+  }
+  .intro__idx {
+    color: var(--signal-text);
+  }
+  .intro__mode dd {
+    margin: var(--s-2) 0 0;
+    color: var(--graphite);
+    font-size: var(--fs-small);
+  }
+
+  @media (max-width: 63.99em) {
+    .intro__text,
+    .intro__modes {
+      grid-column: 3 / -1;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .intro__title,
+    .intro__text,
+    .intro__modes {
+      grid-column: 1 / -1;
+    }
+    .intro__list {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--s-5);
+    }
+  }
+</style>

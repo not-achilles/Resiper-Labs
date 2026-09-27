@@ -1,0 +1,210 @@
+---
+import { hero } from "../content/site";
+import AreaMap from "./AreaMap.astro";
+import { url } from "../lib/url";
+
+const last = hero.states[1]!;
+const statesData = JSON.stringify(
+  hero.states.map((s) => ({ id: s.id, count: s.count, example: s.example })),
+);
+---
+
+<section class="hero" data-section="00" data-label="Overview" aria-labelledby="hero-title">
+  <div class="page grid hero__grid">
+    <div class="hero__text">
+      <p class="mono hero__kicker">
+        {hero.kicker.map((k, i) => (
+          <span class="hero__kick">
+            {k}
+            {i < hero.kicker.length - 1 && (
+              <span class="hero__sep" aria-hidden="true">
+                ·
+              </span>
+            )}
+          </span>
+        ))}
+      </p>
+
+      <!-- prettier-ignore -->
+      <h1 id="hero-title" class="display hero__title">{hero.headline}<span class="hero__point" aria-hidden="true">.</span></h1>
+
+      <p class="lede hero__statement">{hero.statement}</p>
+
+      <p class="hero__actions">
+        <a class="link mono" href={url("/capabilities")}>
+          Capabilities{" "}
+          <span class="link__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+        <a class="link mono" href="#contact">
+          Start a conversation{" "}
+          <span class="link__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </p>
+    </div>
+
+    <figure class="hero__figure" aria-labelledby="hero-fig-caption" data-cycle={statesData}>
+      <div class="hero__readout">
+        <p class="mono-s hero__example" aria-hidden="true">
+          <span class="hero__example-k">Example</span>
+          <span class="hero__example-count" data-cycle-count>
+            {last.count}
+          </span>
+          <span class="hero__example-text" data-cycle-example>
+            {last.example}
+          </span>
+        </p>
+        <button class="hero__pause mono-s" type="button" data-cycle-toggle hidden>
+          <span data-cycle-label>Pause</span>
+        </button>
+      </div>
+      <div class="hero__map hero__map--wide">
+        <AreaMap variant="wide" />
+      </div>
+      <div class="hero__map hero__map--narrow">
+        <AreaMap variant="narrow" />
+      </div>
+      <figcaption id="hero-fig-caption" class="hero__caption">
+        <span class="mono-s">
+          {hero.figure.label} — {hero.figure.title}
+        </span>
+        <span>{hero.figure.caption}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block-start: clamp(var(--s-6), 6vh, var(--s-8));
+  }
+
+  .hero__grid {
+    row-gap: var(--s-8);
+    align-items: start;
+  }
+
+  .hero__text {
+    grid-column: 1 / span 6;
+    display: grid;
+    align-content: start;
+    gap: var(--s-6);
+  }
+
+  .hero__kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.7em;
+  }
+  .hero__kick {
+    white-space: nowrap;
+  }
+  .hero__sep {
+    margin-inline-start: 0.7em;
+    color: var(--signal);
+  }
+
+  .hero__title {
+    font-size: clamp(2.6rem, 0.9rem + 4.1vw, 5.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    font-weight: 340;
+    text-wrap: balance;
+  }
+  .hero__point {
+    color: var(--signal);
+  }
+
+  .hero__statement {
+    max-width: 38rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+  }
+
+  .hero__figure {
+    grid-column: 7 / -1;
+    margin: 0;
+    padding-block-start: var(--s-2);
+  }
+
+  .hero__readout {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-4);
+    min-height: 2.25rem;
+    margin-block-end: var(--s-3);
+  }
+  .hero__example {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.9em;
+    color: var(--graphite);
+  }
+  .hero__example-count {
+    color: var(--signal-text);
+  }
+  .hero__example-text {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .hero__pause {
+    flex: none;
+    padding: var(--s-1) var(--s-2);
+    background: none;
+    border: var(--hair) solid var(--rule-strong);
+    color: var(--graphite);
+    cursor: pointer;
+  }
+  .hero__pause:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .hero__map--narrow {
+    display: none;
+  }
+  .hero__caption {
+    display: grid;
+    gap: var(--s-2);
+    margin-block-start: var(--s-5);
+    padding-block-start: var(--s-3);
+    border-block-start: var(--hair) solid var(--rule);
+    color: var(--graphite);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    max-width: 46ch;
+  }
+
+  @media (max-width: 79.99em) {
+    .hero__text {
+      grid-column: 1 / span 10;
+    }
+    .hero__title {
+      font-size: clamp(2.6rem, 0.8rem + 5.6vw, 5.6rem);
+    }
+    .hero__figure {
+      grid-column: 1 / -1;
+      max-width: 48rem;
+    }
+  }
+
+  @media (max-width: 37.49em) {
+    .hero__text {
+      grid-column: 1 / -1;
+    }
+    .hero__map--wide {
+      display: none;
+    }
+    .hero__map--narrow {
+      display: block;
+    }
+  }
+</style>

@@ -1,0 +1,143 @@
+/* Resiper Labs: design tokens. The only place raw values are defined. */
+
+@font-face {
+  font-family: "Newsreader";
+  src: url("../assets/fonts/newsreader-wght.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("../assets/fonts/hanken-grotesk-wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/ibm-plex-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/ibm-plex-mono-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* Colour: paper / ink / graphite / rule + one signal */
+  --paper: #f3f1ec;
+  --paper-deep: #ebe8e1;
+  --ink: #131416;
+  --graphite: #5a5d64;
+  --rule: #d6d2c8;
+  --rule-strong: #aca79c;
+  --signal: #e4472b; /* vermilion: large text and non-text only */
+  --signal-text: #b3321a; /* vermilion for small text (≥ 4.5:1 on paper) */
+  --selection: #e4472b;
+  --selection-ink: #ffffff;
+
+  /* Plate: the inverted instrument panel */
+  --plate: #131416;
+  --plate-ink: #ecebe6;
+  --plate-graphite: #9b9ea5;
+  --plate-rule: #2e3035;
+  --plate-signal: #ff5b3d;
+
+  /* Type */
+  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-text: "Hanken Grotesk", "Helvetica Neue", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --fs-hero: clamp(2.75rem, 0.6rem + 6.6vw, 7.75rem);
+  --fs-display-l: clamp(2.25rem, 1.2rem + 4.2vw, 5.25rem);
+  --fs-display-m: clamp(1.75rem, 1.2rem + 2.2vw, 3.1rem);
+  --fs-display-s: clamp(1.4rem, 1.15rem + 1vw, 2rem);
+  --fs-lede: clamp(1.125rem, 1.04rem + 0.35vw, 1.35rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-mono: 0.75rem;
+  --fs-mono-s: 0.6875rem;
+
+  --lh-display: 1;
+  --lh-tight: 1.15;
+  --lh-body: 1.6;
+
+  --track-mono: 0.08em;
+
+  /* Space: 8px base */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+  --section-gap: clamp(6rem, 3rem + 9vw, 13rem);
+
+  /* Grid */
+  --page-max: 1520px;
+  --margin: clamp(1rem, 0.2rem + 3.6vw, 4rem);
+  --gutter: clamp(1rem, 0.6rem + 1.2vw, 2rem);
+
+  /* Lines */
+  --hair: 1px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-draw: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 200ms;
+  --t-med: 480ms;
+  --t-slow: 900ms;
+  --t-draw: 1800ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1012;
+    --paper-deep: #151619;
+    --ink: #ebe9e3;
+    --graphite: #9a9ca3;
+    --rule: #26282c;
+    --rule-strong: #43464c;
+    --signal: #ff5b3d;
+    --signal-text: #ff7a60;
+    --selection: #ff5b3d;
+    --selection-ink: #0f1012;
+
+    --plate: #18191c;
+    --plate-ink: #ebe9e3;
+    --plate-graphite: #9a9ca3;
+    --plate-rule: #2e3035;
+    --plate-signal: #ff5b3d;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #0f1012;
+  --paper-deep: #151619;
+  --ink: #ebe9e3;
+  --graphite: #9a9ca3;
+  --rule: #26282c;
+  --rule-strong: #43464c;
+  --signal: #ff5b3d;
+  --signal-text: #ff7a60;
+  --selection: #ff5b3d;
+  --selection-ink: #0f1012;
+
+  --plate: #18191c;
+  --plate-ink: #ebe9e3;
+  --plate-graphite: #9a9ca3;
+  --plate-rule: #2e3035;
+  --plate-signal: #ff5b3d;
+}

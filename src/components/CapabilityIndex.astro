@@ -1,0 +1,311 @@
+---
+import { areasSection, pillars } from "../content/site";
+import { url } from "../lib/url";
+import AreaGlyph from "./AreaGlyph.astro";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="capabilities"
+  class="section capabilities"
+  data-section="02"
+  data-label="Where we work"
+  aria-labelledby="capabilities-title"
+>
+  <div class="page">
+    <SectionRule no="02" title="Where we work" aside="Six capability areas · engage any" />
+
+    <div class="grid capabilities__intro">
+      <h2 id="capabilities-title" class="display capabilities__title" data-reveal>
+        {areasSection.heading}
+      </h2>
+      <div class="capabilities__note" data-reveal style="--reveal-i:1">
+        <p class="capabilities__lede">{areasSection.note}</p>
+        <a class="link mono" href={url("/capabilities")}>
+          Full capability detail{" "}
+          <span class="link__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="index">
+      {pillars.map((p, i) => (
+        <details class="index__row" data-reveal style={`--reveal-i:${i % 3}`}>
+          <summary class="index__summary">
+            <span class="index__no mono">{p.no}</span> <h3 class="index__name display">{p.name}</h3>{" "}
+            <span class="index__keys">
+              {p.keywords.map((k, j) => (
+                <span class="index__key">
+                  {k}
+                  {j < p.keywords.length - 1 && (
+                    <span class="index__dot" aria-hidden="true">
+                      ·
+                    </span>
+                  )}
+                </span>
+              ))}
+            </span>
+            <span class="index__toggle" aria-hidden="true">
+              <span />
+              <span />
+            </span>
+          </summary>
+          <div class="index__detail">
+            <p class="index__line lede">{p.line}</p>
+            <div class="index__groups">
+              {p.groups.map((grp) => (
+                <div class="index__group">
+                  <h4 class="mono-s muted">{grp.title}</h4>
+                  <ul>
+                    {grp.items.map((it) => (
+                      <li>{it}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div class="index__aside">
+              <div>
+                <p class="mono-s muted">Often combined with</p>
+                <AreaGlyph active={[p.no]} related={p.related.map((r) => r.no)} />
+              </div>
+              {p.platforms && (
+                <div>
+                  <p class="mono-s muted">Platforms</p>
+                  <p class="index__platforms">{p.platforms}</p>
+                </div>
+              )}
+              <a class="link mono" href={url(`/capabilities#${p.slug}`)}>
+                Full detail{" "}
+                <span class="link__arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .capabilities__intro {
+    margin-block: var(--s-8);
+    align-items: end;
+    row-gap: var(--s-4);
+  }
+  .capabilities__title {
+    grid-column: 1 / span 8;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .capabilities__note {
+    grid-column: 9 / -1;
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+  }
+  .capabilities__lede {
+    color: var(--graphite);
+  }
+
+  .index {
+    border-block-end: var(--hair) solid var(--ink);
+  }
+  .index__row {
+    border-block-start: var(--hair) solid var(--ink);
+  }
+
+  .index__summary {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: baseline;
+    padding-block: clamp(var(--s-5), 2.6vw, var(--s-6));
+    cursor: pointer;
+    list-style: none;
+  }
+  .index__summary::-webkit-details-marker {
+    display: none;
+  }
+  .index__summary:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .index__no {
+    grid-column: 1 / span 1;
+    color: var(--graphite);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+  .index__name {
+    grid-column: 2 / span 5;
+    font-size: var(--fs-display-s);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-weight: 380;
+    transition: transform var(--t-med) var(--ease-out);
+  }
+  .index__keys {
+    grid-column: 7 / span 5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15em 0.55em;
+    color: var(--graphite);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+  .index__key {
+    white-space: nowrap;
+  }
+  .index__dot {
+    margin-inline-start: 0.55em;
+    color: var(--rule-strong);
+  }
+  .index__toggle {
+    grid-column: 12;
+    justify-self: end;
+    align-self: center;
+    position: relative;
+    width: 14px;
+    height: 14px;
+  }
+  .index__toggle span {
+    position: absolute;
+    inset: 50% 0 auto;
+    height: var(--hair);
+    background: var(--ink);
+    transition: transform var(--t-med) var(--ease-out);
+  }
+  .index__toggle span:last-child {
+    transform: rotate(90deg);
+  }
+  .index__row[open] .index__toggle span:last-child {
+    transform: rotate(0deg);
+  }
+  .index__summary:hover .index__no,
+  .index__row[open] .index__no {
+    color: var(--signal-text);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .index__summary:hover .index__name {
+      transform: translateX(0.3rem);
+    }
+  }
+
+  .index__detail {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-6);
+    padding-block: var(--s-2) var(--s-8);
+  }
+  .index__line {
+    grid-column: 2 / span 7;
+  }
+  .index__groups {
+    grid-column: 2 / span 8;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: var(--s-6) var(--gutter);
+  }
+  .index__group h4 {
+    font-weight: 400;
+    padding-block-end: var(--s-2);
+    border-block-end: var(--hair) solid var(--rule);
+    margin-block-end: var(--s-2);
+  }
+  .index__group li {
+    padding-block: 0.3em;
+    font-size: var(--fs-small);
+    line-height: 1.45;
+  }
+  .index__aside {
+    grid-column: 10 / -1;
+    grid-row: 1 / span 2;
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: var(--s-5);
+  }
+  .index__aside p.mono-s {
+    margin-block-end: var(--s-2);
+  }
+  .index__platforms {
+    font-size: var(--fs-small);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .index__row {
+      interpolate-size: allow-keywords;
+    }
+    .index__row::details-content {
+      height: 0;
+      overflow: clip;
+      transition:
+        height var(--t-med) var(--ease-out),
+        content-visibility var(--t-med) allow-discrete;
+    }
+    .index__row[open]::details-content {
+      height: auto;
+    }
+  }
+
+  @media (max-width: 63.99em) {
+    .index__name {
+      grid-column: 2 / span 10;
+    }
+    .index__keys {
+      grid-column: 2 / span 10;
+      grid-row: 2;
+      margin-block-start: var(--s-2);
+    }
+    .index__toggle {
+      grid-row: 1;
+    }
+    .index__line,
+    .index__groups {
+      grid-column: 2 / -1;
+    }
+    .index__aside {
+      grid-column: 2 / -1;
+      grid-row: auto;
+      grid-template-columns: repeat(3, auto);
+      align-items: end;
+      gap: var(--s-6);
+    }
+    .capabilities__title {
+      grid-column: 1 / span 10;
+    }
+    .capabilities__note {
+      grid-column: 1 / span 8;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .index__no {
+      grid-column: 1 / span 2;
+    }
+    .index__name,
+    .index__keys {
+      grid-column: 3 / span 9;
+    }
+    .index__line,
+    .index__groups,
+    .index__aside {
+      grid-column: 1 / -1;
+    }
+    .index__aside {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .capabilities__title,
+    .capabilities__note {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

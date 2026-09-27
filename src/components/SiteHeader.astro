@@ -1,0 +1,149 @@
+---
+import { nav } from "../content/site";
+import Wordmark from "./Wordmark.astro";
+import { url } from "../lib/url";
+---
+
+<header class="masthead">
+  <div class="page masthead__inner">
+    <a class="masthead__brand" href={url("/")} aria-label="Resiper Labs, home">
+      <Wordmark />
+    </a>
+    <nav class="masthead__nav" aria-label="Primary">
+      <ol>
+        {nav.map((item, i) => (
+          <li>
+            <a href={url(item.href)}>
+              <span class="masthead__idx" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  </div>
+  <div class="readout" aria-hidden="true">
+    <span class="readout__no" data-readout-no>
+      00
+    </span>
+    <span class="readout__bar">
+      <span data-readout-bar></span>
+    </span>
+    <span class="readout__label" data-readout-label>
+      Signal from noise
+    </span>
+  </div>
+</header>
+
+<style>
+  .masthead__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+    padding-block: var(--s-5) var(--s-4);
+  }
+
+  .masthead__brand {
+    display: inline-block;
+    padding-block: var(--s-1);
+  }
+
+  .masthead__nav ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) clamp(var(--s-4), 2.4vw, var(--s-7));
+  }
+
+  .masthead__nav a {
+    display: inline-flex;
+    gap: 0.55em;
+    align-items: baseline;
+    padding-block: var(--s-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--track-mono);
+    text-transform: uppercase;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 calc(100% - 4px);
+    background-size: 0 var(--hair);
+    transition: background-size var(--t-med) var(--ease-out);
+  }
+  .masthead__nav a:hover,
+  .masthead__nav a:focus-visible {
+    background-size: 100% var(--hair);
+  }
+
+  .masthead__idx {
+    color: var(--graphite);
+  }
+
+  /* Instrument readout: current section, fixed, desktop only */
+  .readout {
+    display: none;
+  }
+
+  /* Rotated into the left page margin, like a scale printed on an instrument edge */
+  @media (min-width: 64em) {
+    .readout {
+      position: fixed;
+      z-index: 20;
+      left: calc(max(0px, (100vw - var(--page-max)) / 2) + var(--margin) / 2 + 0.5em);
+      bottom: var(--s-6);
+      transform: rotate(-90deg);
+      transform-origin: 0 100%;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono-s);
+      letter-spacing: var(--track-mono);
+      text-transform: uppercase;
+      color: var(--graphite);
+      pointer-events: none;
+      mix-blend-mode: normal;
+    }
+    .readout__no {
+      color: var(--ink);
+      min-width: 2ch;
+    }
+    .readout__bar {
+      position: relative;
+      width: 4.5rem;
+      height: var(--hair);
+      background: var(--rule-strong);
+    }
+    .readout__bar span {
+      position: absolute;
+      inset: 0;
+      background: var(--signal);
+      transform-origin: 0 50%;
+      transform: scaleX(var(--progress, 0));
+    }
+    :global(.is-on-plate) .readout__no {
+      color: var(--plate-ink);
+    }
+    :global(.is-on-plate) .readout {
+      color: var(--plate-graphite);
+    }
+  }
+
+  @media (max-width: 37.5em) {
+    .masthead__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-2);
+    }
+    .masthead__nav ol {
+      column-gap: var(--s-4);
+    }
+    .masthead__idx {
+      display: none;
+    }
+  }
+</style>

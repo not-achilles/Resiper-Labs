@@ -1,0 +1,14 @@
+---
+interface Props {
+  no: string;
+  title: string;
+  aside?: string;
+}
+const { no, title, aside } = Astro.props;
+---
+
+<div class="section-rule mono" aria-hidden="true">
+  <span class="section-rule__no">§ {no}</span>
+  <span class="section-rule__title">{title}</span>
+  {aside && <span class="section-rule__aside">{aside}</span>}
+</div>

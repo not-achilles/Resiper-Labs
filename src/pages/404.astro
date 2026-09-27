@@ -1,0 +1,40 @@
+---
+import Base from "../layouts/Base.astro";
+import { url } from "../lib/url";
+---
+
+<Base title="Page not found · Resiper Labs" description="This page does not exist.">
+  <section class="page lost" data-section="—" data-label="Not found">
+    <p class="mono lost__code">404 — No signal</p>
+    <h1 class="display lost__title">This page does not exist.</h1>
+    <p class="lede lost__text">
+      The address may have changed, or it may never have resolved into anything.
+    </p>
+    <a class="link mono" href={url("/")}>
+      Return to the homepage <span class="link__arrow">→</span>
+    </a>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+    padding-block: var(--s-10) var(--s-8);
+  }
+  .lost__code {
+    color: var(--signal-text);
+  }
+  .lost__title {
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+    max-width: 14ch;
+  }
+  .lost__text {
+    color: var(--graphite);
+    max-width: 40ch;
+  }
+</style>

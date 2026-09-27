@@ -1,0 +1,142 @@
+---
+import { company, nav } from "../content/site";
+import OwnerPending from "./OwnerPending.astro";
+import Wordmark from "./Wordmark.astro";
+import { url } from "../lib/url";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="colophon">
+  <div class="colophon__trace" aria-hidden="true"></div>
+  <div class="page">
+    <div class="grid colophon__grid">
+      <div class="colophon__mark">
+        <Wordmark size="l" />
+      </div>
+
+      <dl class="colophon__facts">
+        <div>
+          <dt class="mono-s muted">Company</dt>
+          <dd>{company.legalName}</dd>
+        </div>
+        <div>
+          <dt class="mono-s muted">Registered office</dt>
+          <dd>{company.registeredOffice ?? <OwnerPending what="registered office address" />}</dd>
+        </div>
+        <div>
+          <dt class="mono-s muted">Email</dt>
+          <dd class="colophon__list">
+            {company.emails.map((e) => (
+              <a class="link" href={`mailto:${e.address}`}>
+                {e.address}
+              </a>
+            ))}
+          </dd>
+        </div>
+        <div>
+          <dt class="mono-s muted">Phone</dt>
+          <dd class="colophon__list">
+            {company.phones.map((p) => (
+              <a class="link colophon__tel" href={`tel:${p.tel}`}>
+                {p.display}
+              </a>
+            ))}
+          </dd>
+        </div>
+      </dl>
+
+      <nav class="colophon__nav" aria-label="Footer">
+        <ul>
+          {nav.map((item) => (
+            <li>
+              <a class="link" href={url(item.href)}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="colophon__base mono-s muted">
+      <span>
+        © {year} {company.legalName}
+      </span>
+      <span>Infrastructure · Security · Applications · Data · AI · Connected systems</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .colophon {
+    margin-block-start: var(--section-gap);
+    padding-block-end: var(--s-7);
+  }
+
+  /* The resolved signal: the hero's trace, arriving at the end of the page */
+  .colophon__trace {
+    height: 2px;
+    background: var(--signal);
+    margin-block-end: var(--s-8);
+    transform-origin: 100% 50%;
+  }
+
+  .colophon__grid {
+    row-gap: var(--s-7);
+    align-items: start;
+  }
+
+  .colophon__mark {
+    grid-column: 1 / -1;
+  }
+
+  .colophon__facts {
+    grid-column: 1 / span 8;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-5) var(--gutter);
+    font-size: var(--fs-small);
+  }
+  .colophon__facts dd {
+    margin: var(--s-1) 0 0;
+  }
+  .colophon__list {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-1);
+  }
+  .colophon__tel {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .colophon__nav {
+    grid-column: 10 / -1;
+  }
+  .colophon__nav ul {
+    display: grid;
+    gap: var(--s-2);
+    justify-items: start;
+  }
+
+  .colophon__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-block-start: var(--s-8);
+    padding-block-start: var(--s-3);
+    border-block-start: var(--hair) solid var(--rule);
+  }
+
+  @media (max-width: 47.99em) {
+    .colophon__facts {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .colophon__nav {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

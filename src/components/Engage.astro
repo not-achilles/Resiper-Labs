@@ -1,0 +1,196 @@
+---
+import { engageIntro, engagements } from "../content/site";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="engage"
+  class="section engage"
+  data-section="06"
+  data-label="How we engage"
+  aria-labelledby="engage-title"
+>
+  <div class="page">
+    <SectionRule no="06" title="How we engage" aside="Start at any stage" />
+
+    <div class="grid engage__intro">
+      <h2 id="engage-title" class="display engage__title" data-reveal>
+        {engageIntro.heading}
+      </h2>
+      <p class="engage__lede" data-reveal style="--reveal-i:1">
+        {engageIntro.lede}
+      </p>
+    </div>
+
+    <table class="spec">
+      <caption class="visually-hidden">
+        The five engagement stages: purpose, what you bring, and what you leave with
+      </caption>
+      <thead>
+        <tr class="mono-s">
+          <th scope="col">Stage</th>
+          <th scope="col">Engagement</th>
+          <th scope="col">Purpose</th>
+          <th scope="col">You bring</th>
+          <th scope="col">You leave with</th>
+        </tr>
+      </thead>
+      <tbody>
+        {engagements.map((e, i) => (
+          <tr data-reveal style={`--reveal-i:${i}`}>
+            <td class="spec__no mono">
+              <span>{e.no}</span>
+            </td>
+            <th scope="row" class="spec__name display">
+              {e.name}
+            </th>
+            <td data-label="Purpose">{e.purpose}</td>
+            <td data-label="You bring" class="spec__muted">
+              {e.bring}
+            </td>
+            <td data-label="You leave with">{e.leave}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <p class="engage__note mono-s muted">
+      Scope, format and timing are agreed with you before each engagement begins.
+    </p>
+  </div>
+</section>
+
+<style>
+  .engage__intro {
+    margin-block: var(--s-8);
+    row-gap: var(--s-4);
+    align-items: end;
+  }
+  .engage__title {
+    grid-column: 3 / span 6;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .engage__lede {
+    grid-column: 9 / span 4;
+    color: var(--graphite);
+  }
+
+  .spec {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-small);
+  }
+  .spec thead th {
+    text-align: start;
+    font-weight: 400;
+    color: var(--graphite);
+    padding: 0 var(--gutter) var(--s-3) 0;
+    border-block-end: var(--hair) solid var(--ink);
+  }
+  .spec tbody tr {
+    border-block-end: var(--hair) solid var(--rule);
+  }
+  .spec td,
+  .spec tbody th {
+    vertical-align: top;
+    padding: var(--s-6) var(--gutter) var(--s-6) 0;
+    text-align: start;
+  }
+  .spec__no {
+    width: 8%;
+    color: var(--signal-text);
+  }
+  .spec__no span {
+    display: block;
+  }
+  .spec__name {
+    width: 24%;
+    font-size: var(--fs-display-s);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+  }
+  .spec td:nth-child(3) {
+    width: 24%;
+  }
+  .spec__muted {
+    color: var(--graphite);
+  }
+  .spec tr > :last-child {
+    padding-inline-end: 0;
+  }
+
+  .engage__note {
+    margin-block-start: var(--s-4);
+  }
+
+  @media (max-width: 63.99em) {
+    .engage__title {
+      grid-column: 1 / span 8;
+    }
+    .engage__lede {
+      grid-column: 1 / span 8;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .engage__title,
+    .engage__lede {
+      grid-column: 1 / -1;
+    }
+    .spec thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .spec,
+    .spec tbody,
+    .spec tr,
+    .spec td,
+    .spec tbody th {
+      display: block;
+      width: 100%;
+    }
+    .spec tbody tr {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      padding-block: var(--s-5);
+      border-block-start: var(--hair) solid var(--ink);
+      border-block-end: 0;
+    }
+    .spec tbody tr:last-child {
+      border-block-end: var(--hair) solid var(--rule);
+    }
+    .spec td,
+    .spec tbody th,
+    .spec td:nth-child(3),
+    .spec__no,
+    .spec__name {
+      width: auto;
+      padding: 0;
+    }
+    .spec__no {
+      grid-row: 1 / span 4;
+    }
+    .spec__name {
+      margin-block-end: var(--s-3);
+    }
+    .spec td[data-label] {
+      padding-block: var(--s-2);
+    }
+    .spec td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono-s);
+      letter-spacing: var(--track-mono);
+      text-transform: uppercase;
+      color: var(--graphite);
+    }
+  }
+</style>

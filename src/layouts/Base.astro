@@ -1,0 +1,77 @@
+---
+import "../styles/tokens.css";
+import "../styles/base.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { company, meta } from "../content/site";
+import { url } from "../lib/url";
+import newsreaderFont from "../assets/fonts/newsreader-wght.woff2?url";
+import hankenFont from "../assets/fonts/hanken-grotesk-wght.woff2?url";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = meta.title, description = meta.description } = Astro.props;
+
+// Only confirmed properties. `url` and `address` are added
+// once the owner confirms them. No CIN (owner decision).
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: company.brand,
+  legalName: company.legalName,
+  description: meta.description,
+  email: company.emails[0]!.address,
+  telephone: company.phones[0]!.tel,
+  contactPoint: [
+    ...company.emails.map((e) => ({
+      "@type": "ContactPoint",
+      contactType: e.label.toLowerCase(),
+      email: e.address,
+    })),
+    ...company.phones.map((p) => ({
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: p.tel,
+    })),
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml" />
+    <link rel="preload" href={newsreaderFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={hankenFont} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={company.brand} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      import "../scripts/page";
+    </script>
+  </body>
+</html>

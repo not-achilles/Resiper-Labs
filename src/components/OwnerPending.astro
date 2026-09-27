@@ -1,0 +1,13 @@
+---
+/**
+ * Visible marker for owner-confirmed content that does not exist yet.
+ * Renders the literal TODO(OWNER) token so scripts/verify-build.mjs blocks
+ * any deploy that still contains it. Never replace with realistic dummy data.
+ */
+interface Props {
+  what: string;
+}
+const { what } = Astro.props;
+---
+
+<span class="owner-pending">TODO(OWNER): {what}</span>
