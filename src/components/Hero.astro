@@ -1,12 +1,16 @@
 ---
 import { hero } from "../content/site";
-import AreaMap from "./AreaMap.astro";
+import MeaningMap from "./MeaningMap.astro";
 import { url } from "../lib/url";
 
-const last = hero.states[1]!;
-const statesData = JSON.stringify(
-  hero.states.map((s) => ({ id: s.id, count: s.count, example: s.example })),
-);
+const first = hero.states[0]!;
+const describe = (s: (typeof hero.states)[number]) => ({
+  id: s.id,
+  count: s.term,
+  example: s.definition.join(" "),
+});
+const statesData = JSON.stringify(hero.states.map(describe));
+const firstText = describe(first);
 ---
 
 <section class="hero" data-section="00" data-label="Overview" aria-labelledby="hero-title">
@@ -51,10 +55,10 @@ const statesData = JSON.stringify(
         <p class="mono-s hero__example" aria-hidden="true">
           <span class="hero__example-k">Example</span>
           <span class="hero__example-count" data-cycle-count>
-            {last.count}
+            {firstText.count}
           </span>
           <span class="hero__example-text" data-cycle-example>
-            {last.example}
+            {firstText.example}
           </span>
         </p>
         <button class="hero__pause mono-s" type="button" data-cycle-toggle hidden>
@@ -62,10 +66,10 @@ const statesData = JSON.stringify(
         </button>
       </div>
       <div class="hero__map hero__map--wide">
-        <AreaMap variant="wide" />
+        <MeaningMap variant="wide" />
       </div>
       <div class="hero__map hero__map--narrow">
-        <AreaMap variant="narrow" />
+        <MeaningMap variant="narrow" />
       </div>
       <figcaption id="hero-fig-caption" class="hero__caption">
         <span class="mono-s">

@@ -1,0 +1,202 @@
+---
+import { journey } from "../content/site";
+import JourneyDiagram from "./JourneyDiagram.astro";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="journey"
+  class="section journey-s"
+  data-section="03"
+  data-label="The data journey"
+  aria-labelledby="journey-title"
+>
+  <div class="page">
+    <SectionRule no="03" title="The data journey" aside="Conceptual · not a fixed sequence" />
+
+    <div class="grid journey-s__intro">
+      <h2 id="journey-title" class="display journey-s__title" data-reveal>
+        {journey.heading}
+      </h2>
+      <p class="journey-s__lede" data-reveal style="--reveal-i:1">
+        {journey.intro}
+      </p>
+    </div>
+
+    <figure class="journey-s__figure" aria-labelledby="journey-fig-caption">
+      <div class="journey-s__plate journey-s__wide">
+        <JourneyDiagram />
+      </div>
+
+      <ol class="journey-s__list">
+        {journey.stages.map((s) => (
+          <li class="jstep">
+            <span class="jstep__mark" aria-hidden="true" />
+            <span class="jstep__name display">{s.name}</span>
+            <span class="jstep__sub">{s.sub}</span>
+            {s.cap && <span class="jstep__cap mono-s">Capability {s.cap}</span>}
+          </li>
+        ))}
+      </ol>
+      <div class="journey-s__extras">
+        <p class="jextra">
+          <span class="jextra__k mono-s">{journey.iot.cap} · Second stream</span>
+          <span class="jextra__name display">{journey.iot.name}</span>
+          <span class="jextra__sub">
+            {journey.iot.sub}, ingested in real time into the foundation, or straight to alerts.
+          </span>
+        </p>
+        <p class="jextra">
+          <span class="jextra__k mono-s">{journey.governance.cap} · Every stage</span>
+          <span class="jextra__name display">{journey.governance.name}</span>
+          <span class="jextra__sub">
+            {journey.governance.sub}, applied across the whole journey.
+          </span>
+        </p>
+      </div>
+
+      <figcaption id="journey-fig-caption" class="journey-s__caption">
+        <span class="mono-s">
+          {journey.figure.label} — {journey.figure.title}
+        </span>
+        <span>{journey.figure.caption}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .journey-s__intro {
+    margin-block: var(--s-8) var(--s-7);
+    row-gap: var(--s-4);
+    align-items: end;
+  }
+  .journey-s__title {
+    grid-column: 1 / span 6;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .journey-s__lede {
+    grid-column: 7 / -1;
+    color: var(--graphite);
+    font-size: var(--fs-lede);
+    line-height: 1.5;
+  }
+
+  .journey-s__plate {
+    padding-block: var(--s-6);
+    border-block: var(--hair) solid var(--rule);
+  }
+  /* Wide screens: the list stays available to assistive tech as the text
+     alternative to the diagram, but is visually hidden. */
+  @media (min-width: 64em) {
+    .journey-s__list,
+    .journey-s__extras {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+  }
+
+  .journey-s__caption {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding-block-start: var(--s-3);
+    color: var(--graphite);
+    font-size: var(--fs-small);
+  }
+  .journey-s__caption > :first-child {
+    grid-column: 1 / span 3;
+  }
+  .journey-s__caption > :last-child {
+    grid-column: 4 / span 7;
+  }
+
+  /* Narrow screens: the journey as a vertical rail */
+  @media (max-width: 63.99em) {
+    .journey-s__title,
+    .journey-s__lede {
+      grid-column: 1 / -1;
+    }
+    .journey-s__wide {
+      display: none;
+    }
+    .journey-s__list {
+      display: grid;
+      border-block-start: var(--hair) solid var(--ink);
+      padding-block-start: var(--s-5);
+    }
+    .jstep {
+      position: relative;
+      display: grid;
+      gap: var(--s-1);
+      padding-inline-start: 2rem;
+      padding-block-end: var(--s-5);
+    }
+    .jstep::before {
+      content: "";
+      position: absolute;
+      left: 0.4rem;
+      top: 0.9rem;
+      bottom: -0.2rem;
+      width: 2px;
+      background: var(--signal);
+    }
+    .jstep:last-child::before {
+      display: none;
+    }
+    .jstep__mark {
+      position: absolute;
+      left: 0;
+      top: 0.45rem;
+      width: 0.95rem;
+      height: 0.95rem;
+      background: var(--ink);
+    }
+    .jstep:last-child .jstep__mark {
+      background: var(--signal);
+    }
+    .jstep__name {
+      font-size: 1.45rem;
+      line-height: 1.2;
+    }
+    .jstep__sub {
+      color: var(--graphite);
+      font-size: var(--fs-small);
+    }
+    .jstep__cap {
+      color: var(--signal-text);
+    }
+    .journey-s__extras {
+      display: grid;
+      gap: var(--s-4);
+      margin-block: var(--s-3) var(--s-2);
+    }
+    .jextra {
+      display: grid;
+      gap: var(--s-1);
+      padding: var(--s-4);
+      border: var(--hair) dashed var(--rule-strong);
+    }
+    .jextra__k {
+      color: var(--signal-text);
+    }
+    .jextra__name {
+      font-size: 1.3rem;
+    }
+    .jextra__sub {
+      color: var(--graphite);
+      font-size: var(--fs-small);
+    }
+    .journey-s__caption > :first-child,
+    .journey-s__caption > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

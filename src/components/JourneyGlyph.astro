@@ -1,0 +1,92 @@
+---
+/**
+ * The data journey in miniature: six stages, the IoT stream entering the
+ * foundation, and the data-management band beneath. The parts a capability
+ * covers are drawn in signal.
+ */
+import { journey, type Capability } from "../content/site";
+
+interface Props {
+  place: Capability["place"];
+}
+const { place } = Astro.props;
+
+const xs = journey.stages.map((_, i) => 8 + i * 29);
+const Y = 14;
+const foundationX = xs[2]!;
+const covered = journey.stages.filter((s) => place.stages.includes(s.id)).map((s) => s.name);
+if (place.iot) covered.push(journey.iot.name);
+if (place.governance) covered.push(`${journey.governance.name}, across every stage`);
+const label = `Where it sits in the data journey: ${covered.join(", ")}`;
+---
+
+<span class="jglyph" role="img" aria-label={label}>
+  <svg viewBox="0 0 162 58" aria-hidden="true" focusable="false">
+    <line x1={xs[0]} x2={xs[xs.length - 1]} y1={Y} y2={Y} class="jglyph__line"></line>
+    <path
+      d={`M${xs[0]} 36 H${foundationX} V${Y + 5}`}
+      class:list={["jglyph__iot", place.iot && "jglyph__iot--on"]}
+    ></path>
+    {journey.stages.map((s, i) => (
+      <rect
+        x={xs[i]! - 4}
+        y={Y - 4}
+        width="8"
+        height="8"
+        class:list={["jglyph__sq", place.stages.includes(s.id) && "jglyph__sq--on"]}
+      />
+    ))}
+    <rect
+      x={xs[1]! - 4}
+      y="46"
+      width={xs[4]! - xs[1]! + 8}
+      height="6"
+      class:list={["jglyph__band", place.governance && "jglyph__band--on"]}
+    ></rect>
+  </svg>
+</span>
+
+<style>
+  .jglyph {
+    display: inline-block;
+    width: 12rem;
+  }
+  .jglyph svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .jglyph__line {
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .jglyph__sq {
+    fill: var(--paper);
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .jglyph__sq--on {
+    fill: var(--signal);
+    stroke: var(--signal);
+  }
+  .jglyph__iot {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  .jglyph__iot--on {
+    stroke: var(--signal);
+    stroke-width: 2.5;
+    stroke-dasharray: none;
+  }
+  .jglyph__band {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .jglyph__band--on {
+    fill: var(--signal);
+    stroke: var(--signal);
+  }
+</style>

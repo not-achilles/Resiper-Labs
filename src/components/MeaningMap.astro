@@ -1,0 +1,236 @@
+---
+/**
+ * Fig. 0: One meaning. Four systems name the same thing differently; the
+ * names converge into one business term that every consumer uses.
+ * Illustrates consolidation + semantic layer (and IoT, in the Machine state).
+ * States are switched by src/scripts/page.ts; the first state is the static
+ * default (no JS / reduced motion). Field names are illustrative.
+ */
+import { hero } from "../content/site";
+
+interface Props {
+  variant: "wide" | "narrow";
+}
+const { variant } = Astro.props;
+const wide = variant === "wide";
+
+const W = wide ? 600 : 360;
+const H = wide ? 372 : 420;
+
+// Source chips
+const chipW = wide ? 196 : 172;
+const chipH = 50;
+const chips = wide
+  ? [0, 1, 2, 3].map((i) => ({ x: 0, y: 36 + i * 76 }))
+  : [
+      { x: 0, y: 0 },
+      { x: 188, y: 0 },
+      { x: 0, y: 64 },
+      { x: 188, y: 64 },
+    ];
+
+// Merge node and term box
+const node = wide ? { x: 300, y: 185 } : { x: 180, y: 168 };
+const box = wide ? { x: 330, y: 104, w: 270, h: 162 } : { x: 0, y: 196, w: 360, h: 140 };
+
+const connectors = chips.map((c) => {
+  if (wide) {
+    const sx = c.x + chipW;
+    const sy = c.y + chipH / 2;
+    const mx = (sx + node.x) / 2;
+    return `M${sx} ${sy} C${mx} ${sy} ${mx} ${node.y} ${node.x} ${node.y}`;
+  }
+  const sx = c.x + chipW / 2;
+  const sy = c.y + chipH;
+  return `M${sx} ${sy} C${sx} ${node.y - 14} ${node.x} ${sy + 8} ${node.x} ${node.y}`;
+});
+const toBox = wide ? `M${node.x} ${node.y} H${box.x}` : `M${node.x} ${node.y} V${box.y}`;
+
+// Consumers
+const consumersY = box.y + box.h + (wide ? 44 : 40);
+const consumerX = wide ? [box.x, box.x + 66, box.x + 160, box.x + 196] : [0, 86, 196, 238];
+const initial = hero.states[0]!.id;
+---
+
+<svg
+  class:list={["mmap", `mmap--${variant}`]}
+  viewBox={`-2 -2 ${W + 4} ${H + 4}`}
+  aria-hidden="true"
+  focusable="false"
+  data-state={initial}
+  data-cycle-target
+>
+  {wide && (
+    <text x="0" y="14" class="mmap__label">
+      SOURCE SYSTEMS
+    </text>
+  )}
+
+  {/* Wires first, so the opaque chips sit on top and wires pass behind them */}
+  {connectors.map((d) => (
+    <path d={d} class="mmap__wire" />
+  ))}
+  {chips.map((c) => (
+    <rect x={c.x} y={c.y} width={chipW} height={chipH} class="mmap__chip" />
+  ))}
+  <path d={toBox} class="mmap__lead"></path>
+  <rect x={node.x - 5} y={node.y - 5} width="10" height="10" class="mmap__node"></rect>
+
+  <rect x={box.x} y={box.y} width={box.w} height={box.h} class="mmap__box"></rect>
+  <text x={box.x + 18} y={box.y + 28} class="mmap__label">
+    BUSINESS TERM
+  </text>
+
+  {hero.states.map((s) => (
+    <g class="mmap__state" data-for={s.id}>
+      {s.sources.map(([sys, field], i) => {
+        const c = chips[i]!;
+        return (
+          <g>
+            <text x={c.x + 12} y={c.y + 19} class="mmap__sys">
+              {sys!.toUpperCase()}
+            </text>
+            <text x={c.x + 12} y={c.y + 38} class="mmap__field">
+              {field}
+            </text>
+          </g>
+        );
+      })}
+      <text x={box.x + 18} y={box.y + 72} class="mmap__term">
+        {s.term}
+      </text>
+      {s.definition.map((ln, i) => (
+        <text x={box.x + 18} y={box.y + 104 + i * 19} class="mmap__def">
+          {ln}
+        </text>
+      ))}
+    </g>
+  ))}
+
+  <text x={box.x} y={consumersY - 22} class="mmap__label">
+    USED BY
+  </text>
+  <line
+    x1={box.x}
+    x2={box.x + box.w}
+    y1={consumersY - 12}
+    y2={consumersY - 12}
+    class="mmap__rule"
+  ></line>
+  {hero.consumers.map((c, i) => (
+    <g>
+      <line
+        x1={consumerX[i]}
+        x2={consumerX[i]}
+        y1={consumersY - 12}
+        y2={consumersY - 4}
+        class="mmap__rule"
+      />
+      <text x={consumerX[i]} y={consumersY + 12} class="mmap__consumer">
+        {c.toUpperCase()}
+      </text>
+    </g>
+  ))}
+</svg>
+
+<style>
+  .mmap {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .mmap__label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    fill: var(--graphite);
+  }
+  .mmap__chip {
+    fill: var(--paper);
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .mmap__sys {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    fill: var(--graphite);
+  }
+  .mmap__field {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    fill: var(--ink);
+  }
+  .mmap__wire {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .mmap__lead {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.25;
+  }
+  .mmap__node {
+    fill: var(--signal);
+  }
+  .mmap__box {
+    fill: var(--signal);
+    fill-opacity: 0.06;
+    stroke: var(--signal);
+    stroke-width: 1.5;
+  }
+  .mmap__term {
+    font-family: var(--font-display);
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    fill: var(--ink);
+  }
+  .mmap__def {
+    font-family: var(--font-text);
+    font-size: 13.5px;
+    fill: var(--graphite);
+  }
+  .mmap__rule {
+    stroke: var(--ink);
+    stroke-width: 1;
+  }
+  .mmap__consumer {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    fill: var(--ink);
+  }
+
+  .mmap__state {
+    opacity: 0;
+    transition: opacity var(--t-med) var(--ease-out);
+  }
+  .mmap[data-state="a"] [data-for="a"],
+  .mmap[data-state="b"] [data-for="b"],
+  .mmap[data-state="c"] [data-for="c"] {
+    opacity: 1;
+  }
+
+  /* Data flowing along the wires toward the business term */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .mmap__wire {
+      stroke-dasharray: 4 5;
+      animation: mmap-flow 1.6s linear infinite;
+    }
+    :global(.js) .mmap.is-paused .mmap__wire {
+      animation-play-state: paused;
+    }
+  }
+  @keyframes mmap-flow {
+    to {
+      stroke-dashoffset: -18;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mmap__state {
+      transition: none;
+    }
+  }
+</style>

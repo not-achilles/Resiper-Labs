@@ -1,0 +1,285 @@
+---
+/**
+ * Fig. 1: The data journey (wide screens). A conceptual path from source
+ * systems to action, with IoT as a second, real-time stream and data
+ * management as a band that governs every stage. Not a sequence every client
+ * must buy; the section text and the list version say so explicitly.
+ */
+import { journey } from "../content/site";
+
+const W = 1200;
+const H = 384;
+const LANE = 190;
+const X: Record<string, number> = {
+  sources: 0,
+  consolidate: 300,
+  foundation: 520,
+  semantic: 741,
+  intelligence: 950,
+  action: 1130,
+};
+const box = { x: 460, y: 155, w: 120, h: 70 };
+const bar = { x: 735, y: 146, w: 12, h: 88 };
+const sourceNames = ["ERP", "CRM", "FILES", "CLOUD APPS"];
+const sourceY = [160, 180, 200, 220];
+const band = { x: 230, y: 268, w: 790, h: 26 };
+const IOT_Y = 350;
+const iotRise = 560;
+---
+
+<svg
+  class="journey"
+  viewBox={`-2 -2 ${W + 4} ${H + 4}`}
+  aria-hidden="true"
+  focusable="false"
+  data-draw
+>
+  <defs>
+    <marker
+      id="journey-arrow"
+      viewBox="0 0 10 10"
+      refX="8"
+      refY="5"
+      markerWidth="7"
+      markerHeight="7"
+      orient="auto-start-reverse"
+    >
+      <path d="M0 1 L9 5 L0 9" class="journey__head"></path>
+    </marker>
+    <pattern
+      id="journey-hatch"
+      width="7"
+      height="7"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(45)"
+    >
+      <line x1="0" y1="0" x2="0" y2="7" class="journey__hatch"></line>
+    </pattern>
+  </defs>
+
+  <!-- Stage labels (above the lane) -->
+  {journey.stages.map((s) => {
+    const x = X[s.id]!;
+    const anchor = s.id === "sources" ? "start" : "middle";
+    return (
+      <g>
+        {s.cap && (
+          <text x={x} y="84" text-anchor={anchor} class="journey__cap">
+            {s.cap}
+          </text>
+        )}
+        <text x={x} y="110" text-anchor={anchor} class="journey__name">
+          {s.name}
+        </text>
+        {s.id !== "sources" && (
+          <text x={x} y="132" text-anchor={anchor} class="journey__sub">
+            {s.sub.toUpperCase()}
+          </text>
+        )}
+      </g>
+    );
+  })}
+
+  <!-- Sources converging into consolidation -->
+  {sourceNames.map((n, i) => (
+    <g>
+      <text x="0" y={sourceY[i]! + 4} class="journey__src">
+        {n}
+      </text>
+      <path
+        d={`M92 ${sourceY[i]} C200 ${sourceY[i]} 200 ${LANE} ${X["consolidate"]} ${LANE}`}
+        class="journey__feed"
+      />
+    </g>
+  ))}
+
+  <!-- Main path -->
+  <path
+    d={`M${X["consolidate"]} ${LANE} H${box.x} M${box.x + box.w} ${LANE} H${bar.x} M${bar.x + bar.w} ${LANE} H${X["action"]! + 34}`}
+    class="journey__lane"
+    marker-end="url(#journey-arrow)"
+  ></path>
+  <path
+    d={`M${X["consolidate"]} ${LANE} H${X["action"]! + 34}`}
+    class="journey__signal"
+    pathLength="1"
+  ></path>
+
+  <!-- Stage marks -->
+  <rect x={X["consolidate"]! - 6} y={LANE - 6} width="12" height="12" class="journey__mark"></rect>
+  <rect x={box.x} y={box.y} width={box.w} height={box.h} class="journey__box"></rect>
+  <text x={box.x + box.w / 2} y={box.y + 30} text-anchor="middle" class="journey__boxtext">
+    LAKEHOUSE
+  </text>
+  <text x={box.x + box.w / 2} y={box.y + 48} text-anchor="middle" class="journey__boxtext">
+    WAREHOUSE
+  </text>
+  <rect x={bar.x} y={bar.y} width={bar.w} height={bar.h} class="journey__bar"></rect>
+  <rect x={X["intelligence"]! - 6} y={LANE - 6} width="12" height="12" class="journey__mark"></rect>
+  <rect
+    x={X["action"]! - 6}
+    y={LANE - 6}
+    width="12"
+    height="12"
+    class="journey__mark journey__mark--end"
+  ></rect>
+
+  <!-- Data management band -->
+  <rect
+    x={band.x}
+    y={band.y}
+    width={band.w}
+    height={band.h}
+    fill="url(#journey-hatch)"
+    class="journey__band"
+  ></rect>
+  <!-- Label starts right of the IoT riser so the stream never crosses the text -->
+  <text x={iotRise + 24} y={band.y + 17} class="journey__bandtext">
+    <tspan class="journey__capinline">{journey.governance.cap}</tspan>
+    <tspan dx="8">{journey.governance.name.toUpperCase()}</tspan>
+    <tspan dx="8" class="journey__bandsub">
+      — {journey.governance.sub.toUpperCase()}
+    </tspan>
+  </text>
+
+  <!-- IoT stream -->
+  <text x="0" y={IOT_Y - 4} class="journey__iotname">
+    <tspan class="journey__capinline">{journey.iot.cap}</tspan>
+    <tspan dx="8">{journey.iot.name.toUpperCase()}</tspan>
+  </text>
+  <text x="0" y={IOT_Y + 16} class="journey__src">
+    {journey.iot.sub.toUpperCase()}
+  </text>
+  <path
+    d={`M250 ${IOT_Y} H${iotRise} V${box.y + box.h}`}
+    class="journey__iot"
+    pathLength="1"
+  ></path>
+  <text x="270" y={IOT_Y - 8} class="journey__note">
+    REAL-TIME INGESTION
+  </text>
+  <path
+    d={`M${iotRise} ${IOT_Y} H${X["action"]} V${LANE + 8}`}
+    class="journey__alert"
+    marker-end="url(#journey-arrow)"
+  ></path>
+  <text x="820" y={IOT_Y - 8} class="journey__note">
+    REAL-TIME ALERTS
+  </text>
+</svg>
+
+<style>
+  .journey {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .journey__cap,
+  .journey__capinline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    fill: var(--signal-text);
+  }
+  .journey__name {
+    font-family: var(--font-display);
+    font-size: 21px;
+    fill: var(--ink);
+  }
+  .journey__sub,
+  .journey__src,
+  .journey__note {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    fill: var(--graphite);
+  }
+  .journey__feed {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .journey__lane {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1;
+  }
+  .journey__head {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.3;
+  }
+  .journey__signal {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.25;
+  }
+  .journey__mark {
+    fill: var(--ink);
+  }
+  .journey__mark--end {
+    fill: var(--signal);
+  }
+  .journey__box {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 1.5;
+  }
+  .journey__boxtext {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    fill: var(--ink);
+  }
+  .journey__bar {
+    fill: var(--signal);
+  }
+  .journey__band {
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .journey__hatch {
+    stroke: var(--rule);
+    stroke-width: 1;
+  }
+  .journey__bandtext,
+  .journey__iotname {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--paper);
+    stroke-width: 5px;
+  }
+  .journey__bandsub {
+    fill: var(--graphite);
+  }
+  .journey__iot {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.25;
+  }
+  .journey__alert {
+    fill: none;
+    stroke: var(--graphite);
+    stroke-width: 1;
+    stroke-dasharray: 4 5;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .journey__signal,
+    :global(.js) .journey__iot {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 2200ms var(--ease-draw) 200ms;
+    }
+    :global(.js) .journey__iot {
+      transition-delay: 1400ms;
+    }
+    :global(.js) .journey.is-in .journey__signal,
+    :global(.js) .journey.is-in .journey__iot {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

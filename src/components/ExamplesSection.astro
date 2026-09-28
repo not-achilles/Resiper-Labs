@@ -1,0 +1,216 @@
+---
+import { capByNo, examples } from "../content/site";
+import { url } from "../lib/url";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="examples"
+  class="section ex"
+  data-section="05"
+  data-label="Examples"
+  aria-labelledby="ex-title"
+>
+  <div class="page">
+    <SectionRule no="05" title="Examples" aside="Illustrative" />
+
+    <div class="grid ex__intro">
+      <h2 id="ex-title" class="display ex__title" data-reveal>
+        {examples.heading}
+      </h2>
+      <p class="ex__lede" data-reveal style="--reveal-i:1">
+        {examples.intro}
+      </p>
+    </div>
+
+    <ol class="ex__list">
+      {examples.items.map((item, i) => (
+        <li class="exi" data-reveal style={`--reveal-i:${i}`}>
+          <div class="exi__head">
+            <span class="mono-s exi__label">
+              Illustrative example {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 class="display exi__title">{item.title}</h3>
+          </div>
+          <ol class="exi__flow">
+            {item.steps.map((s, j) => (
+              <li class:list={["exi__step", j === item.steps.length - 1 && "exi__step--end"]}>
+                <span class="exi__n mono-s" aria-hidden="true">
+                  {j + 1}
+                </span>
+                <span class="exi__text">{s}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="exi__caps mono-s">
+            <span class="muted">Capabilities</span>
+            {item.caps.map((no) => {
+              const c = capByNo(no);
+              return (
+                <a class="exi__cap" href={url(`/capabilities#${c.slug}`)}>
+                  <span class="exi__capno">{c.no}</span> {c.name}
+                </a>
+              );
+            })}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ex__intro {
+    margin-block: var(--s-8) var(--s-7);
+    row-gap: var(--s-4);
+    align-items: end;
+  }
+  .ex__title {
+    grid-column: 1 / span 7;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .ex__lede {
+    grid-column: 8 / -1;
+    color: var(--graphite);
+  }
+
+  .exi {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-4);
+    padding-block: var(--s-6);
+    border-block-start: var(--hair) solid var(--ink);
+  }
+  .exi:last-child {
+    border-block-end: var(--hair) solid var(--ink);
+  }
+  .exi__head {
+    grid-column: 1 / span 3;
+    display: grid;
+    align-content: start;
+    gap: var(--s-2);
+  }
+  .exi__label {
+    color: var(--signal-text);
+  }
+  .exi__title {
+    font-size: var(--fs-display-s);
+    line-height: 1.15;
+  }
+
+  /* The flow: four stations on a rail */
+  .exi__flow {
+    grid-column: 4 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    counter-reset: step;
+  }
+  .exi__step {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--s-2);
+    padding-block-start: var(--s-5);
+  }
+  .exi__step::before {
+    /* rail segment to the next station */
+    content: "";
+    position: absolute;
+    top: 0.45rem;
+    left: 0;
+    right: calc(var(--gutter) * -1);
+    height: var(--hair);
+    background: var(--ink);
+  }
+  .exi__step::after {
+    content: "";
+    position: absolute;
+    top: 0.1rem;
+    left: 0;
+    width: 0.7rem;
+    height: 0.7rem;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+  }
+  .exi__step--end::before {
+    right: 0;
+    width: 1rem;
+  }
+  .exi__step--end::after {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+  .exi__n {
+    color: var(--graphite);
+  }
+  .exi__text {
+    font-size: var(--fs-small);
+    line-height: 1.45;
+  }
+
+  .exi__caps {
+    grid-column: 4 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-5);
+    margin-block-start: var(--s-2);
+  }
+  .exi__cap {
+    color: var(--ink);
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 var(--hair);
+    transition: background-size var(--t-med) var(--ease-out);
+  }
+  .exi__cap:hover,
+  .exi__cap:focus-visible {
+    background-size: 100% var(--hair);
+  }
+  .exi__capno {
+    color: var(--signal-text);
+  }
+
+  @media (max-width: 63.99em) {
+    .exi__head,
+    .exi__flow,
+    .exi__caps {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .ex__title,
+    .ex__lede {
+      grid-column: 1 / -1;
+    }
+    /* Vertical rail on phones */
+    .exi__flow {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0;
+    }
+    .exi__step {
+      padding-block: 0 var(--s-4);
+      padding-inline-start: 1.6rem;
+    }
+    .exi__step::before {
+      top: 0.8rem;
+      bottom: 0;
+      left: calc(0.35rem - 0.5px);
+      right: auto;
+      width: var(--hair);
+      height: auto;
+    }
+    .exi__step--end::before {
+      display: none;
+    }
+    .exi__step::after {
+      top: 0.3rem;
+    }
+  }
+</style>

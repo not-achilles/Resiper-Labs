@@ -1,0 +1,60 @@
+---
+/**
+ * Client reference. Leadership-approved (2026-09-28): the client may be
+ * named. Name only: no logo, scope, metrics or quote.
+ */
+import { clients } from "../content/site";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="clients"
+  class="section clients"
+  data-section="08"
+  data-label="Client"
+  aria-labelledby="clients-title"
+>
+  <div class="page">
+    <SectionRule no="08" title="Client reference" aside={clients.note} />
+    <div class="grid clients__body">
+      <h2 id="clients-title" class="mono clients__k">
+        {clients.label}
+      </h2>
+      <ul class="clients__list">
+        {clients.names.map((n) => (
+          <li class="display clients__name" data-reveal>
+            {n}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .clients__body {
+    margin-block-start: var(--s-7);
+    align-items: baseline;
+    row-gap: var(--s-3);
+  }
+  .clients__k {
+    grid-column: 1 / span 3;
+    font-weight: 400;
+    color: var(--graphite);
+  }
+  .clients__list {
+    grid-column: 4 / -1;
+  }
+  .clients__name {
+    font-size: var(--fs-display-m);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 360;
+  }
+  @media (max-width: 47.99em) {
+    .clients__k,
+    .clients__list {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

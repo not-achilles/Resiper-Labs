@@ -1,6 +1,6 @@
 # Resiper Labs
 
-Website for **Resiper Labs Private Limited**, an engineering-led technology company working across infrastructure, cyber security, applications, data, AI and connected industrial systems.
+Website for **Resiper Labs Private Limited**, a specialist data engineering company: data management, data consolidation, data platforms (including Microsoft Fabric Data Warehouse), semantic layer and analytics, AI on data, and IoT and real-time data.
 
 Live: https://not-achilles.github.io/Resiper-Labs/
 

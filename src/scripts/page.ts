@@ -88,7 +88,7 @@ const cycle = (): void => {
   const toggle = fig.querySelector<HTMLButtonElement>("[data-cycle-toggle]");
   const label = fig.querySelector<HTMLElement>("[data-cycle-label]");
 
-  let i = 1; // matches the static default rendered in the HTML
+  let i = 0; // matches the static default rendered in the HTML
   let timer = 0;
   let userPaused = false;
   let visible = true;
@@ -103,6 +103,7 @@ const cycle = (): void => {
   const sync = (): void => {
     window.clearInterval(timer);
     timer = 0;
+    maps.forEach((m) => m.classList.toggle("is-paused", !running()));
     if (running()) {
       timer = window.setInterval(() => {
         i = (i + 1) % states.length;

@@ -1,7 +1,7 @@
 ---
-import { areasSection, pillars } from "../content/site";
+import { capabilities, capabilitiesSection } from "../content/site";
 import { url } from "../lib/url";
-import AreaGlyph from "./AreaGlyph.astro";
+import JourneyGlyph from "./JourneyGlyph.astro";
 import SectionRule from "./SectionRule.astro";
 ---
 
@@ -9,18 +9,18 @@ import SectionRule from "./SectionRule.astro";
   id="capabilities"
   class="section capabilities"
   data-section="02"
-  data-label="Where we work"
+  data-label="What we engineer"
   aria-labelledby="capabilities-title"
 >
   <div class="page">
-    <SectionRule no="02" title="Where we work" aside="Six capability areas · engage any" />
+    <SectionRule no="02" title="What we engineer" aside="Six data capabilities" />
 
     <div class="grid capabilities__intro">
       <h2 id="capabilities-title" class="display capabilities__title" data-reveal>
-        {areasSection.heading}
+        {capabilitiesSection.heading}
       </h2>
       <div class="capabilities__note" data-reveal style="--reveal-i:1">
-        <p class="capabilities__lede">{areasSection.note}</p>
+        <p class="capabilities__lede">{capabilitiesSection.note}</p>
         <a class="link mono" href={url("/capabilities")}>
           Full capability detail{" "}
           <span class="link__arrow" aria-hidden="true">
@@ -31,7 +31,7 @@ import SectionRule from "./SectionRule.astro";
     </div>
 
     <div class="index">
-      {pillars.map((p, i) => (
+      {capabilities.map((p, i) => (
         <details class="index__row" data-reveal style={`--reveal-i:${i % 3}`}>
           <summary class="index__summary">
             <span class="index__no mono">{p.no}</span> <h3 class="index__name display">{p.name}</h3>{" "}
@@ -68,15 +68,13 @@ import SectionRule from "./SectionRule.astro";
             </div>
             <div class="index__aside">
               <div>
-                <p class="mono-s muted">Often combined with</p>
-                <AreaGlyph active={[p.no]} related={p.related.map((r) => r.no)} />
+                <p class="mono-s muted">In the data journey</p>
+                <JourneyGlyph place={p.place} />
               </div>
-              {p.platforms && (
-                <div>
-                  <p class="mono-s muted">Platforms</p>
-                  <p class="index__platforms">{p.platforms}</p>
-                </div>
-              )}
+              <div>
+                <p class="mono-s muted">Technologies</p>
+                <p class="index__platforms">{p.tech}</p>
+              </div>
               <a class="link mono" href={url(`/capabilities#${p.slug}`)}>
                 Full detail{" "}
                 <span class="link__arrow" aria-hidden="true">

@@ -1,0 +1,104 @@
+---
+import { problem } from "../content/site";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="problem"
+  class="section problem"
+  data-section="01"
+  data-label="The data problem"
+  aria-labelledby="problem-title"
+>
+  <div class="page">
+    <SectionRule no="01" title="The data problem" aside="Why data is hard to use" />
+
+    <div class="grid problem__body">
+      <h2 id="problem-title" class="display problem__title" data-reveal>
+        {problem.heading}
+      </h2>
+      <div class="problem__text">
+        {problem.body.map((p, i) => (
+          <p data-reveal style={`--reveal-i:${i + 1}`}>
+            {p}
+          </p>
+        ))}
+      </div>
+      <div class="problem__symptoms">
+        <p class="mono-s muted problem__k">Familiar symptoms</p>
+        <ul>
+          {problem.symptoms.map((s, i) => (
+            <li data-reveal style={`--reveal-i:${i}`}>
+              <span class="mono-s problem__idx" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem__body {
+    margin-block-start: var(--s-8);
+    row-gap: var(--s-7);
+  }
+  .problem__title {
+    grid-column: 1 / span 9;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .problem__text {
+    grid-column: 1 / span 6;
+    display: grid;
+    gap: var(--s-4);
+  }
+  .problem__text p:first-child {
+    font-size: var(--fs-lede);
+    line-height: 1.5;
+  }
+  .problem__text p + p {
+    color: var(--graphite);
+  }
+  .problem__symptoms {
+    grid-column: 8 / -1;
+  }
+  .problem__k {
+    padding-block-end: var(--s-3);
+    border-block-end: var(--hair) solid var(--ink);
+  }
+  .problem__symptoms li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: baseline;
+    padding-block: var(--s-4);
+    border-block-end: var(--hair) solid var(--rule);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  .problem__idx {
+    color: var(--signal-text);
+  }
+
+  @media (max-width: 63.99em) {
+    .problem__text {
+      grid-column: 1 / span 10;
+    }
+    .problem__symptoms {
+      grid-column: 1 / span 10;
+    }
+  }
+  @media (max-width: 47.99em) {
+    .problem__title,
+    .problem__text,
+    .problem__symptoms {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

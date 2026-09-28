@@ -1,15 +1,15 @@
 /**
- * Resiper Labs: site copy.
+ * Resiper Labs: site copy (specialist data direction).
  *
  * Content rules:
+ *  - Resiper Labs is a specialist data engineering company: data management,
+ *    consolidation, data platforms, semantic layer & analytics, AI on data,
+ *    IoT & real-time data. Infrastructure appears only as supporting cloud
+ *    infrastructure for data workloads.
  *  - Factual statements are owner-confirmed. Everything else is method,
  *    principle or capability language that implies no track record.
- *  - The six areas are capability territories. Clients engage one or several;
- *    nothing may imply a mandatory sequence through them.
+ *  - Examples are labelled illustrative and contain no invented numbers.
  *  - No invented clients, numbers, testimonials, partnerships or certifications.
- *
- * Owner-pending values are `null` and render a visible TODO(OWNER) marker,
- * which blocks deployment until they are provided.
  */
 
 export const company = {
@@ -32,9 +32,9 @@ export const company = {
 };
 
 export const meta = {
-  title: "Resiper Labs · Technology engineering company",
+  title: "Resiper Labs · Data engineering, analytics, AI on data and IoT",
   description:
-    "Resiper Labs designs, builds and supports infrastructure, cyber security, applications, data, AI and connected industrial systems: one area at a time, or several together.",
+    "Resiper Labs consolidates enterprise and machine data, builds data platforms on Microsoft Fabric, Databricks and AWS, gives data one business meaning, and puts analytics and AI to work on it.",
 };
 
 export const nav = [
@@ -44,572 +44,526 @@ export const nav = [
   { href: "/#contact", label: "Contact" },
 ];
 
-/* ─── Capability areas ────────────────────────────────────── */
+/* ─── Capabilities ────────────────────────────────────────── */
 
-export type PillarNo = "01" | "02" | "03" | "04" | "05" | "06";
+export type CapNo = "01" | "02" | "03" | "04" | "05" | "06";
 
-export interface Pillar {
-  no: PillarNo;
+/** Stages of the conceptual data journey (not a sequence clients must buy). */
+export type Stage =
+  "sources" | "consolidate" | "foundation" | "semantic" | "intelligence" | "action";
+
+export interface Capability {
+  no: CapNo;
   slug: string;
   name: string;
-  /** Name broken for diagrams */
-  lines: string[];
-  /** Three short examples shown inside diagram zones */
-  keys: string[];
   line: string;
   problem: string;
   intro: string;
   keywords: string[];
   groups: { title: string; items: string[] }[];
-  related: { no: PillarNo; why: string }[];
-  starts: string[];
-  platforms?: string;
+  tech: string;
+  related: { no: CapNo; why: string }[];
+  example: { title: string; text: string };
+  /** Where it sits in the data journey (for the journey glyph) */
+  place: { stages: Stage[]; iot?: boolean; governance?: boolean };
 }
 
-/** source: business architecture §3 */
-export const pillars: Pillar[] = [
+/** source: owner business direction, 2026-09-28 (confirmed niche areas + Sales Pitch) */
+export const capabilities: Capability[] = [
   {
     no: "01",
-    slug: "infrastructure",
-    name: "Infrastructure & Networks",
-    lines: ["Infrastructure", "& Networks"],
-    keys: ["Data centres", "Compute · Storage", "Networks"],
-    line: "The physical and virtual foundation business systems run on.",
+    slug: "data-management",
+    name: "Data Management",
+    line: "Data that is governed, documented and fit to use.",
     problem:
-      "Systems that are slow, fragile or out of capacity, and data centres and networks that need to be built, modernised or managed.",
+      "Nobody is quite sure which data is correct, who owns it, or whether it can be trusted for a decision.",
     intro:
-      "We design, build and manage data centres, compute, storage and networks, and keep them resilient once they are running.",
-    keywords: [
-      "Data centres",
-      "Compute",
-      "Storage",
-      "Virtualisation",
-      "Networks",
-      "Backup & recovery",
-      "Infrastructure management",
-    ],
+      "We set up the architecture, ownership and rules that keep data accurate, secure and understood, so every other use of it rests on something reliable.",
+    keywords: ["Data architecture", "Governance", "Data quality", "Master data", "Lineage"],
     groups: [
       {
-        title: "Data centre",
-        items: [
-          "Data centre design and build-out",
-          "Power systems",
-          "Structured and passive cabling",
-          "Networking and IT equipment",
-        ],
-      },
-      {
-        title: "Compute & storage",
-        items: [
-          "Server and storage platforms",
-          "Server and storage virtualisation",
-          "Hyperconverged infrastructure",
-        ],
-      },
-      {
-        title: "Networks",
-        items: [
-          "Enterprise network design and implementation",
-          "Wireless networks",
-          "Network management systems",
-          "Communication systems and command-and-control centres",
-        ],
-      },
-      {
-        title: "Resilience",
-        items: ["Backup", "Data protection", "Platform and data migration"],
-      },
-      {
-        title: "Operations",
-        items: [
-          "Server and operating-system administration",
-          "Virtualisation administration",
-          "Storage, backup and network infrastructure management",
-        ],
-      },
-    ],
-    related: [
-      {
-        no: "02",
-        why: "Perimeter, network and endpoint security are designed with the network, not after it.",
-      },
-      { no: "03", why: "Applications and databases need platforms sized and tuned for them." },
-      { no: "06", why: "Plant and site equipment depends on reliable networks to connect." },
-    ],
-    starts: [
-      "A data centre build, expansion or refresh",
-      "Consolidating servers onto virtualised or hyperconverged platforms",
-      "A network redesign or upgrade",
-      "Backup and recovery that has never been tested",
-    ],
-  },
-  {
-    no: "02",
-    slug: "security",
-    name: "Cyber Security",
-    lines: ["Cyber", "Security"],
-    keys: ["Firewalls", "Access control", "SIEM · VAPT"],
-    line: "Protection for networks, devices, applications and data.",
-    problem:
-      "Exposure to attacks, data leaks and compliance gaps, which often stay invisible until they are tested.",
-    intro:
-      "We design and implement security controls across networks, endpoints, identities, applications and data, and we test them.",
-    keywords: [
-      "Firewalls",
-      "Endpoint protection",
-      "Access control",
-      "Data loss prevention",
-      "SIEM",
-      "VAPT",
-    ],
-    groups: [
-      {
-        title: "Network",
-        items: [
-          "Firewalls",
-          "Intrusion prevention",
-          "Network segmentation",
-          "Web security",
-          "Wireless security",
-        ],
-      },
-      {
-        title: "Endpoint & messaging",
-        items: ["Antivirus and anti-malware", "Email security", "Mobile device security"],
-      },
-      {
-        title: "Identity & data",
-        items: ["Access control", "Data loss prevention", "Behavioural analytics"],
-      },
-      {
-        title: "Applications",
-        items: ["Application security", "Security of application and IT infrastructure"],
-      },
-      {
-        title: "Assurance",
-        items: [
-          "Vulnerability assessment and penetration testing (VAPT)",
-          "Security information and event management (SIEM)",
-          "Risk analysis and mitigation",
-          "Cloud security",
-          "Support for regulatory compliance",
-        ],
-      },
-    ],
-    related: [
-      { no: "01", why: "Firewalls, segmentation and wireless security live in the network." },
-      { no: "03", why: "Application security and access control protect business systems." },
-      { no: "04", why: "Data loss prevention and access rules protect sensitive data." },
-      {
-        no: "06",
-        why: "Connected equipment widens the attack surface and needs the same controls.",
-      },
-    ],
-    starts: [
-      "A vulnerability assessment and penetration test",
-      "Centralising security monitoring with a SIEM",
-      "Segmenting a flat network",
-      "Controlling access to sensitive data",
-    ],
-  },
-  {
-    no: "03",
-    slug: "applications",
-    name: "Applications & Enterprise Systems",
-    lines: ["Applications &", "Enterprise systems"],
-    keys: ["ERP", "Custom applications", "Databases"],
-    line: "The software the business runs on: built, migrated, integrated and supported.",
-    problem:
-      "Business software that is outdated, disconnected or hard to change, from ERP to the custom applications teams depend on.",
-    intro:
-      "We build custom applications, implement and extend enterprise systems such as ERP, and move existing applications onto modern platforms without losing what works.",
-    keywords: [
-      "Application development",
-      "Migration & porting",
-      "ERP",
-      "Databases",
-      "Middleware",
-      "Application support",
-    ],
-    groups: [
-      {
-        title: "Build",
-        items: [
-          "Custom application development",
-          "Configuration and extension of off-the-shelf software",
-          "Interfaces designed for the people who use them",
-        ],
-      },
-      {
-        title: "Modernise",
-        items: ["Application migration", "Application porting between platforms"],
-      },
-      {
-        title: "Enterprise systems",
-        items: ["ERP solutions", "Database platforms", "Integration between enterprise systems"],
-      },
-      {
-        title: "Platforms",
-        items: [
-          "Application servers and middleware",
-          "Web servers and load balancing",
-          "File and database server platforms",
-        ],
-      },
-      {
-        title: "Run",
-        items: ["Application support", "Application performance management"],
-      },
-    ],
-    related: [
-      { no: "01", why: "Applications run on infrastructure that has to be right for them." },
-      { no: "04", why: "Most reporting and analytics starts from application data." },
-      {
-        no: "05",
-        why: "Automation acts inside business applications, for example by raising an order in the ERP.",
-      },
-    ],
-    starts: [
-      "Moving a business-critical application to a new platform",
-      "Extending or integrating an ERP",
-      "Replacing a spreadsheet-driven process with an application",
-      "Stabilising an application that is slow or unreliable",
-    ],
-  },
-  {
-    no: "04",
-    slug: "data",
-    name: "Data & Analytics",
-    lines: ["Data &", "Analytics"],
-    keys: ["Data platforms", "Warehousing", "Power BI · Fabric"],
-    line: "Data that is consolidated, trusted and put in front of the people who decide.",
-    problem:
-      "Data scattered across systems and spreadsheets, reports nobody fully trusts, and decisions made later than they should be.",
-    intro:
-      "We engineer the pipelines, warehouses and models that bring scattered data together, and the reporting and analytics that turn it into decisions.",
-    keywords: [
-      "Data engineering",
-      "Data warehousing",
-      "Power BI",
-      "Microsoft Fabric",
-      "Real-time analytics",
-    ],
-    groups: [
-      {
-        title: "Data foundations",
-        items: [
-          "Batch and real-time data pipelines",
-          "Data lake and lakehouse architecture",
-          "Data warehousing",
-          "Data consolidation and migration",
-        ],
+        title: "Architecture",
+        items: ["Data architecture and modelling", "Data standards and naming conventions"],
       },
       {
         title: "Governance",
-        items: ["Master data management", "Lineage and data quality"],
-      },
-      {
-        title: "Analytics & BI",
         items: [
-          "Power BI architecture and reporting",
-          "Migration from Power BI to Microsoft Fabric",
-          "Descriptive and diagnostic analytics",
-          "Real-time operational analytics",
+          "Data ownership and stewardship",
+          "Access rules and handling of sensitive data",
+          "Lineage: where data comes from and how it changes",
         ],
       },
       {
-        title: "Decision intelligence",
-        items: ["Predictive and prescriptive analytics", "Forecasting and anomaly detection"],
+        title: "Quality",
+        items: ["Data quality rules and monitoring", "Master data management"],
       },
     ],
+    tech: "Across Microsoft Fabric, Databricks and AWS environments",
     related: [
-      { no: "03", why: "ERP and business applications are usually the main sources." },
-      { no: "05", why: "Models and AI depend on data that is consolidated and trusted." },
-      { no: "06", why: "Equipment and sensor data can be analysed alongside business data." },
+      { no: "02", why: "Consolidation needs agreed rules for matching and cleaning data." },
+      { no: "04", why: "Governed data is what makes shared business definitions trustworthy." },
+      { no: "05", why: "AI should only read data whose origin and quality are known." },
     ],
-    starts: [
-      "Consolidating data spread across systems and spreadsheets",
-      "A Power BI estate that needs an architecture",
-      "Moving to Microsoft Fabric",
-      "Making operational data available in real time",
-    ],
-    platforms: "AWS · Databricks · Microsoft Fabric · Power BI",
+    example: {
+      title: "One revenue figure",
+      text: "Three departments report different revenue totals. A shared definition, a named owner and quality checks give everyone the same number.",
+    },
+    place: { stages: [], governance: true },
   },
   {
-    no: "05",
-    slug: "ai",
-    name: "AI & Automation",
-    lines: ["AI &", "Automation"],
-    keys: ["Machine learning", "Vision · Language", "Agents · Workflows"],
-    line: "Machine learning and applied AI, put to work inside real processes.",
+    no: "02",
+    slug: "data-consolidation",
+    name: "Data Consolidation",
+    line: "Scattered data, brought into one coherent environment.",
     problem:
-      "Repetitive or judgement-heavy work that could be assisted or automated, and AI pilots that never reached everyday use.",
+      "Data sits in ERPs, CRMs, spreadsheets, plant systems and cloud applications that were never designed to work together.",
     intro:
-      "We build models and AI systems where they earn their place, from vision and language to optimisation and agents, and connect them to the workflows that act on them.",
+      "We build batch and real-time pipelines that bring data out of each system, reconcile it, and land it in one place in a consistent shape.",
+    keywords: ["Data pipelines", "ETL / ELT", "Integration", "Reconciliation", "Migration"],
+    groups: [
+      {
+        title: "Ingestion",
+        items: [
+          "Batch and real-time data pipelines (ETL / ELT)",
+          "Connections to ERP, CRM, files and cloud applications",
+        ],
+      },
+      {
+        title: "Reconciliation",
+        items: [
+          "Matching and de-duplicating records across systems",
+          "Consolidation into a single, query-ready model",
+        ],
+      },
+      {
+        title: "Migration",
+        items: [
+          "Moving on-premises data estates to the cloud",
+          "Consolidating legacy databases and reporting stores",
+        ],
+      },
+    ],
+    tech: "AWS · Databricks · Microsoft Fabric",
+    related: [
+      {
+        no: "01",
+        why: "Consolidation follows the data rules and ownership agreed in data management.",
+      },
+      { no: "03", why: "Consolidated data lands in a data lake, lakehouse or warehouse." },
+      { no: "06", why: "Machine data can be consolidated alongside business data." },
+    ],
+    example: {
+      title: "One customer view",
+      text: "Customer records held separately in the ERP, the CRM and the billing system are matched and combined into one view of each customer.",
+    },
+    place: { stages: ["consolidate"] },
+  },
+  {
+    no: "03",
+    slug: "data-platforms",
+    name: "Data Platforms",
+    line: "The right home for data: data lake, lakehouse or Fabric Data Warehouse.",
+    problem:
+      "Data platforms that grew by accident: hard to scale, costly to run, and slow to answer new questions.",
+    intro:
+      "We design and build the platform that fits your data and your team, whether that is a data lake or lakehouse, a Microsoft Fabric Data Warehouse, or a combination, on the cloud you use.",
     keywords: [
-      "Machine learning",
-      "Computer vision",
-      "NLP",
-      "Optimisation",
-      "AI agents",
-      "Workflow automation",
+      "Data lake",
+      "Lakehouse",
+      "Fabric Data Warehouse",
+      "Cloud data platforms",
+      "Data engineering",
     ],
     groups: [
       {
-        title: "Machine learning",
+        title: "Data lake & lakehouse",
+        items: ["Data lake and lakehouse architecture", "Raw, processed and archive data zones"],
+      },
+      {
+        title: "Fabric Data Warehouse",
         items: [
-          "Machine learning and deep learning models",
-          "Planning, scheduling and optimisation",
-          "Expert systems",
+          "Microsoft Fabric Data Warehouse design and build",
+          "Migration of existing warehouses and Power BI estates to Microsoft Fabric",
         ],
       },
       {
-        title: "Perception & language",
-        items: ["Computer vision", "Natural language processing", "Speech recognition"],
+        title: "Cloud data platforms",
+        items: ["Data platforms on AWS and Databricks", "Cloud infrastructure for data workloads"],
       },
       {
-        title: "Applied AI & agents",
+        title: "Data engineering",
+        items: ["Orchestration and scheduling", "Performance and cost tuning"],
+      },
+    ],
+    tech: "Microsoft Fabric · Fabric Data Warehouse · Databricks · AWS",
+    related: [
+      { no: "02", why: "Pipelines feed the platform from every source system." },
+      { no: "04", why: "The semantic layer sits on top of the platform." },
+      { no: "05", why: "AI works on data held and prepared in the platform." },
+    ],
+    example: {
+      title: "A warehouse that has outgrown its server",
+      text: "A reporting database that no longer keeps up moves into a Fabric Data Warehouse, and the existing Power BI reports are reconnected to it.",
+    },
+    place: { stages: ["foundation"] },
+  },
+  {
+    no: "04",
+    slug: "semantic-layer",
+    name: "Semantic Layer & Analytics",
+    line: "One business meaning for every number.",
+    problem:
+      "The same term means different things in different systems and teams, so the same question gets different answers.",
+    intro:
+      "We build the semantic layer: shared business definitions and models that sit between the data and every report, dashboard and AI tool, so everyone works from the same meaning.",
+    keywords: [
+      "Business definitions",
+      "Semantic models",
+      "Power BI",
+      "Microsoft Fabric",
+      "Analytics",
+    ],
+    groups: [
+      {
+        title: "Semantic layer",
         items: [
-          "Generative AI applications",
-          "AI agents and agentic workflows",
-          "Workflow automation across enterprise systems",
+          "Business definitions and metrics",
+          "Semantic models",
+          "Consistent hierarchies, calculations and access rules",
+        ],
+      },
+      {
+        title: "Analytics",
+        items: [
+          "Power BI reports and dashboards",
+          "Power BI and Microsoft Fabric architecture",
+          "Self-service analytics on governed data",
+        ],
+      },
+      {
+        title: "Decision support",
+        items: ["Forecasting and trend analysis", "Anomaly detection"],
+      },
+    ],
+    tech: "Power BI · Microsoft Fabric",
+    related: [
+      { no: "01", why: "Definitions are only as good as the governance behind them." },
+      { no: "03", why: "Semantic models are built on the data platform." },
+      { no: "05", why: "AI uses the same definitions, so its answers match the reports." },
+    ],
+    example: {
+      title: "What counts as an active customer",
+      text: "'Active customer' is defined once, with its rule, and every report, dashboard and AI query uses that same definition.",
+    },
+    place: { stages: ["semantic", "intelligence"] },
+  },
+  {
+    no: "05",
+    slug: "ai-on-data",
+    name: "AI on Data",
+    line: "AI that works on your data, not around it.",
+    problem:
+      "AI pilots that look impressive but give unreliable answers, because the data underneath them is scattered or inconsistent.",
+    intro:
+      "We build AI on top of a governed data foundation and semantic layer. People can ask questions of their data, get assisted analysis, and automate the decisions the data supports.",
+    keywords: [
+      "Conversational data",
+      "Applied AI",
+      "Machine learning",
+      "AI agents",
+      "Data-driven automation",
+    ],
+    groups: [
+      {
+        title: "Conversational data",
+        items: [
+          "Ask questions of your data in plain language",
+          "Answers grounded in governed data and business definitions",
+        ],
+      },
+      {
+        title: "Applied AI",
+        items: [
+          "Machine learning for forecasting, classification and anomaly detection",
+          "AI-assisted analysis and summarisation",
+          "Understanding documents and unstructured text",
+        ],
+      },
+      {
+        title: "Agents & automation",
+        items: [
+          "AI agents where the task and the data justify them",
+          "Automation triggered by trusted data",
           "Human review designed into automated steps",
         ],
       },
       {
         title: "Assurance",
         items: [
-          "Model evaluation on accuracy, cost and latency",
-          "Deployment on your infrastructure or through enterprise APIs",
+          "Evaluation for accuracy, cost and latency",
+          "Deployment in your environment or through enterprise APIs",
         ],
       },
     ],
+    tech: "Microsoft Fabric · Databricks · AWS",
     related: [
-      { no: "04", why: "Models need data that is consolidated and trusted." },
-      { no: "03", why: "Automated decisions have to land in the applications people use." },
-      { no: "06", why: "Vision and models can act on equipment and inspection data." },
+      { no: "03", why: "AI reads from the data platform, not from each source system." },
+      { no: "04", why: "The semantic layer gives AI the same meaning your reports use." },
+      { no: "06", why: "Machine data lets AI detect and predict what happens on the floor." },
     ],
-    starts: [
-      "A repetitive, rules-heavy process that consumes skilled time",
-      "Visual inspection that depends on people watching",
-      "Scheduling or planning done by hand",
-      "An AI pilot that never reached production",
-    ],
+    example: {
+      title: "A question in plain language",
+      text: "A sales manager asks which regions are behind plan this quarter. The answer comes from the governed sales model, using the agreed definition of 'plan'.",
+    },
+    place: { stages: ["intelligence", "action"] },
   },
   {
     no: "06",
-    slug: "connected",
-    name: "Connected & Industrial Systems",
-    lines: ["Connected &", "Industrial systems"],
-    keys: ["IoT · IIoT", "Industrial automation", "Robotics · Drones"],
-    line: "Machines, sites and field operations brought into the business, and automated.",
+    slug: "iot",
+    name: "IoT & Real-Time Data",
+    line: "Machine and device data, connected to the systems that need it.",
     problem:
-      "Machines, sites and field operations whose data never reaches the business, and physical processes still run by hand.",
+      "Machines and sites produce a constant stream of data that stays on the shop floor, disconnected from the rest of the business.",
     intro:
-      "We connect equipment and sites to the rest of the enterprise, collect and analyse their data in real time, and build the automation that acts on the operation.",
-    keywords: ["IoT", "IIoT", "Real-time data", "Industrial automation", "Robotics", "Drones"],
+      "We collect data from devices, sensors and industrial systems, move it in real time, and bring it into the same data environment as the rest of the business, where it can be analysed and acted on.",
+    keywords: [
+      "Device data",
+      "Machine data",
+      "Real-time ingestion",
+      "Real-time analytics",
+      "Alerts",
+    ],
     groups: [
       {
-        title: "Connected devices",
+        title: "Device & machine data",
         items: [
-          "IoT and IIoT deployments",
-          "Real-time data collection from devices and machines",
-          "Edge-to-cloud data pipelines",
+          "Sensor and device data collection",
           "Integration with PLCs, historians and plant systems",
         ],
       },
       {
-        title: "Industrial automation",
+        title: "Real-time",
         items: [
-          "Industrial automation",
-          "Autonomous mobile robots",
-          "Robotics design and integration",
+          "Streaming ingestion, from the edge to the cloud",
+          "Real-time monitoring and operational analytics",
+          "Alerts when readings move out of range",
         ],
       },
       {
-        title: "Aerial systems",
-        // Specific drone applications to be confirmed before listing.
-        items: ["Drone-based systems for industrial data capture"],
+        title: "Connected to the business",
+        items: [
+          "Combining machine data with ERP and maintenance data",
+          "History kept for analysis and AI",
+        ],
       },
     ],
+    tech: "AWS · Microsoft Fabric · Databricks",
     related: [
-      { no: "01", why: "Devices depend on site networks and edge infrastructure." },
-      { no: "02", why: "Connected equipment has to be secured like any other system." },
-      { no: "04", why: "Equipment data becomes useful when it joins the data platform." },
+      { no: "02", why: "Machine data is consolidated with business data." },
+      { no: "03", why: "Readings are stored in the platform for history and analysis." },
+      { no: "05", why: "Models use machine data to detect and predict issues." },
     ],
-    starts: [
-      "Machine data that is collected but never used",
-      "Connecting plant systems to enterprise systems",
-      "Monitoring equipment and sites in real time",
-      "Automating movement or handling on the floor",
-    ],
+    example: {
+      title: "A motor drifting out of range",
+      text: "Vibration readings from a motor stream in real time. When they drift out of range, maintenance is alerted with the machine's history attached.",
+    },
+    place: { stages: ["action"], iot: true },
   },
 ];
 
-export const pillarByNo = (no: PillarNo): Pillar => pillars.find((p) => p.no === no)!;
+export const capByNo = (no: CapNo): Capability => capabilities.find((c) => c.no === no)!;
 
 /* ─── Home ────────────────────────────────────────────────── */
 
-/** source: positioning v3 */
 export const hero = {
-  kicker: ["Infrastructure", "Security", "Applications", "Data", "AI", "Connected systems"],
-  headline: "Enterprise technology, engineered to work together",
+  kicker: [
+    "Data management",
+    "Consolidation",
+    "Data platforms",
+    "Semantic layer",
+    "AI on data",
+    "IoT",
+  ],
+  headline: "Engineering data into decisions",
   statement:
-    "Resiper Labs is an engineering-led technology company. We design, build and support infrastructure, security, applications, data, AI and connected industrial systems: one area at a time, or several together when a problem crosses boundaries.",
+    "Resiper Labs is a specialist data engineering company. We consolidate data from scattered systems and machines, build the platforms that hold it, give it one business meaning, and put analytics and AI to work on top of it.",
   figure: {
     label: "Fig. 0",
-    title: "Where we work",
+    title: "One meaning",
     caption:
-      "Six capability areas across the enterprise technology environment. The highlighted combinations are examples: an engagement may involve one area or several.",
+      "Different systems name the same thing differently. Consolidated and defined once, it means the same thing to every report, dashboard, AI tool and alert. Field names are illustrative.",
   },
-  /** Example configurations cycled in the hero map. Illustrative only. */
+  /** Illustrative examples for the hero figure. Invented field names; no client data. */
   states: [
-    { id: "a", count: "One area", example: "e.g. an ERP migration", areas: ["03"] as PillarNo[] },
+    {
+      id: "a",
+      term: "Customer",
+      definition: ["One record per customer,", "matched across systems"],
+      sources: [
+        ["ERP", "CUST_NO"],
+        ["CRM", "account_id"],
+        ["Billing", "client_ref"],
+        ["Spreadsheet", "Customer Name"],
+      ],
+    },
     {
       id: "b",
-      count: "Two areas",
-      example: "e.g. a secure network redesign",
-      areas: ["01", "02"] as PillarNo[],
+      term: "Product",
+      definition: ["One code and hierarchy across", "sales, stock and finance"],
+      sources: [
+        ["ERP", "ITEM_CODE"],
+        ["Warehouse", "sku"],
+        ["E-commerce", "product_id"],
+        ["Finance", "prod_ref"],
+      ],
     },
     {
       id: "c",
-      count: "Several areas",
-      example: "e.g. putting equipment data to work",
-      areas: ["06", "01", "02", "04", "05"] as PillarNo[],
+      term: "Machine",
+      definition: ["One asset ID linking sensor", "readings to maintenance history"],
+      sources: [
+        ["Sensor", "LN2-MTR-07"],
+        ["Historian", "TAG_4471"],
+        ["Maintenance", "ASSET-0231"],
+        ["ERP", "EQUIP_NO"],
+      ],
     },
   ],
+  consumers: ["Reports", "Dashboards", "AI", "Alerts"],
 };
 
-export const intro = {
-  heading: "An engineering-led technology company.",
+export const problem = {
+  heading: "Data is everywhere. Usable data is not.",
   body: [
-    "We work on the technology organisations run on: data centres and networks, the security around them, business applications and ERP, data and reporting, AI and automation, and the machines and equipment in plants and in the field.",
-    "Some clients need one of these done well. Others have a problem that crosses several. We do both, and when several areas are involved, we make sure they work together.",
+    "In most organisations, data is spread across ERPs, CRMs, spreadsheets, cloud applications and the machines on the floor. Each system has its own formats, and its own names for the same things.",
+    "So reports disagree, simple questions take days to answer, and AI tools give confident answers built on inconsistent data. The problem is rarely a lack of data. It is the missing layer that makes data usable.",
   ],
-  modes: [
-    {
-      k: "One area",
-      v: "A specific project: a network redesign, a security assessment, an ERP migration or a reporting platform.",
-    },
-    {
-      k: "Several areas",
-      v: "A problem that crosses technology boundaries, engineered as one piece of work.",
-    },
-    {
-      k: "Ongoing support",
-      v: "Administration, maintenance and support of what is already running.",
-    },
+  symptoms: [
+    "The same question gets three different answers",
+    "Reports are rebuilt by hand every month",
+    "Machine data never leaves the plant",
+    "AI pilots nobody trusts enough to use",
   ],
 };
 
-export const areasSection = {
-  heading: "From infrastructure to intelligence.",
-  note: "Six capability areas. Engage us for one, or for several. Open an area to see its scope.",
+export const capabilitiesSection = {
+  heading: "Six specialisms. One discipline: data.",
+  note: "Engage us for one of them, or for several. Open a capability for its scope.",
 };
 
-/**
- * Illustrative scenario. Labelled as an example on the page; names no client
- * and states no result. Must never read as a fixed sequence.
- */
-export const scenario = {
-  heading: "When the problem crosses boundaries.",
+/** Conceptual data journey. Not a sequence every client must buy. */
+export const journey = {
+  heading: "The data journey.",
   intro:
-    "A real business problem rarely belongs to one technology area. The scenario below is illustrative: it shows how several areas can work together on one problem. It is not a sequence every project follows.",
-  problem: "Catch equipment faults before they stop production.",
-  steps: [
+    "How data becomes useful, from the systems where it starts to the decisions and actions it supports. Most clients need part of this journey, not all of it.",
+  stages: [
+    { id: "sources" as Stage, name: "Sources", sub: "ERP · CRM · files · cloud apps", cap: "" },
     {
-      no: "1",
-      layer: "06" as PillarNo,
-      tag: "Machine signal",
-      text: "A sensor on a production machine detects vibration drifting out of range.",
+      id: "consolidate" as Stage,
+      name: "Consolidate",
+      sub: "Pipelines · reconciliation",
+      cap: "02",
     },
     {
-      no: "2",
-      layer: "01" as PillarNo,
-      tag: "Site network",
-      text: "The reading travels over the site network to on-site compute and storage.",
+      id: "foundation" as Stage,
+      name: "Foundation",
+      sub: "Data lake · Fabric Data Warehouse",
+      cap: "03",
+    },
+    { id: "semantic" as Stage, name: "Semantic layer", sub: "One business meaning", cap: "04" },
+    {
+      id: "intelligence" as Stage,
+      name: "Analytics & AI",
+      sub: "Reports · AI on data",
+      cap: "04 · 05",
     },
     {
-      no: "3",
-      layer: "02" as PillarNo,
-      tag: "Security controls",
-      text: "Access is controlled and the traffic is inspected on the way.",
-    },
-    {
-      no: "4",
-      layer: "04" as PillarNo,
-      tag: "Data platform",
-      text: "It lands in the data platform, alongside the machine's maintenance history from the ERP.",
-    },
-    {
-      no: "5",
-      layer: "05" as PillarNo,
-      tag: "Anomaly model",
-      text: "A model recognises the pattern as an early sign of failure.",
-    },
-    {
-      no: "6",
-      layer: "03" as PillarNo,
-      tag: "ERP work order",
-      text: "A work order is raised in the ERP and the spare part is reserved.",
-    },
-    {
-      no: "7",
-      layer: "03" as PillarNo,
-      tag: "Maintenance team",
-      text: "The maintenance team is notified and the repair is scheduled before the machine fails.",
+      id: "action" as Stage,
+      name: "Action",
+      sub: "Decisions and alerts",
+      cap: "",
     },
   ],
+  iot: { name: "IoT & real-time data", sub: "Devices · sensors · machines", cap: "06" },
+  governance: {
+    name: "Data management",
+    sub: "Architecture · governance · quality",
+    cap: "01",
+  },
   figure: {
     label: "Fig. 1",
-    title: "One problem, several areas",
+    title: "The data journey",
     caption:
-      "Illustrative scenario. This problem touches all six areas; many touch only one or two.",
-  },
-  others: {
-    heading: "Other problems touch fewer areas",
-    items: [
-      { text: "Replacing ageing servers", areas: ["01"] as PillarNo[] },
-      { text: "Securing remote access for staff", areas: ["01", "02"] as PillarNo[] },
-      { text: "Faster, trusted month-end reporting", areas: ["03", "04"] as PillarNo[] },
-      { text: "Automating invoice processing", areas: ["03", "05"] as PillarNo[] },
-    ],
+      "Business data and machine data follow the same path to usefulness. Data management governs every stage. A client may need one stage or several.",
   },
 };
 
-/** source: positioning (method and belief; no track record implied) */
-export const principles = [
-  {
-    no: "01",
-    rule: "Architecture outlives the project.",
-    text: "We design for the estate you will run for years, not only for go-live. What we build is documented and built to be maintained by the people who inherit it.",
-  },
-  {
-    no: "02",
-    rule: "One owner across the boundaries.",
-    text: "When a problem crosses technology areas, most failures happen at the edges. We take responsibility for how the parts work together, not only for our own part.",
-  },
-  {
-    no: "03",
-    rule: "Secure by design.",
-    text: "Access control, segmentation, data protection and audit trails are designed in from the first drawing, not added after an incident.",
-  },
-  {
-    no: "04",
-    rule: "Validate before you scale.",
-    text: "Migrations are rehearsed, data is reconciled, pilots are measured and models are tested on your own data before anything is rolled out widely.",
-  },
-  {
-    no: "05",
-    rule: "Delivered, documented, handed over.",
-    text: "Transparent implementation and deliberate knowledge transfer, so your team understands, and can operate, what was built.",
-  },
-];
+export const foundation = {
+  heading: "AI is only as good as the data under it.",
+  lede: "Analytics and AI inherit every inconsistency in the data they read. That is why we start with the data, and build analytics and AI on top of it.",
+  rows: [
+    ["Each system defines 'customer' differently", "One definition, used by every report and tool"],
+    [
+      "AI answers vary with the source it happens to read",
+      "AI answers come from governed, consistent data",
+    ],
+    ["Machine data stays on the shop floor", "Machine data sits alongside business data"],
+    [
+      "Every new question starts a new data project",
+      "New questions use data that is already prepared",
+    ],
+  ],
+};
+
+export const examples = {
+  heading: "What it looks like in practice.",
+  intro:
+    "Three illustrative examples of the kind of work we do. They show the shape of the work, not results from a specific client.",
+  items: [
+    {
+      title: "Reporting everyone agrees on",
+      steps: [
+        "Fragmented data in ERP, CRM and spreadsheets",
+        "Consolidated into one data environment",
+        "Semantic model with agreed definitions",
+        "Business reporting in Power BI",
+      ],
+      caps: ["02", "03", "04"] as CapNo[],
+    },
+    {
+      title: "Machine data that raises an alert",
+      steps: [
+        "Machine and sensor data",
+        "Real-time ingestion",
+        "Real-time analytics",
+        "Operational alert to the maintenance team",
+      ],
+      caps: ["06", "04"] as CapNo[],
+    },
+    {
+      title: "Asking questions of business data",
+      steps: [
+        "Business data from core systems",
+        "Governed data foundation",
+        "Semantic layer",
+        "AI query and analysis in plain language",
+      ],
+      caps: ["01", "03", "04", "05"] as CapNo[],
+    },
+  ],
+};
+
+/** source: leadership approval to name Apollo Tyres as a client (2026-09-28). Name only. */
+export const clients = {
+  label: "Client",
+  names: ["Apollo Tyres"],
+  note: "Named with permission.",
+};
 
 /** Method, in customer-friendly language. */
 export const methodIntro = {
   heading: "Four steps, whatever the size of the job.",
-  lede: "The same four steps apply to a network upgrade, an ERP migration or an AI pilot. Each step ends with something you can review before the next one begins.",
+  lede: "The same four steps apply to a data consolidation, a Fabric Data Warehouse or an AI-on-data pilot. Each step ends with something you can review before the next one begins.",
   io: ["In — a business need", "Out — a result you can verify"],
   loop: "What we measure shapes the next step: scale, adjust or stop",
 };
@@ -618,20 +572,20 @@ export const method = [
   {
     no: "01",
     name: "Understand",
-    text: "We start with your business: what is happening today, what should happen instead, and how we will both know it worked.",
+    text: "We start with your business: the decisions that matter, the data behind them today, and how we will both know it worked.",
     output: "Agreed goals and success measures",
   },
   {
     no: "02",
     name: "Architect",
-    text: "We look at what you already have and design the solution around it, reusing what works.",
+    text: "We look at your systems and data as they are and design the target architecture around them, reusing what works.",
     output: "A design and a plan you can review",
   },
   {
     no: "03",
     name: "Build",
-    text: "We implement in stages you can see and test, not in one big reveal at the end.",
-    output: "Working systems in your environment",
+    text: "We build pipelines, platforms, models and AI in stages you can see and test, not in one big reveal at the end.",
+    output: "Working data systems in your environment",
   },
   {
     no: "04",
@@ -641,55 +595,53 @@ export const method = [
   },
 ];
 
-/**
- * Engagement stages. No durations, pricing or response times are published.
- */
+/** Engagement stages. No durations, pricing or response times are published. */
 export const engageIntro = {
   heading: "Start where you are.",
-  lede: "Five ways to work with us. Start at whichever stage fits: many clients begin with a discovery workshop; others arrive with a design already agreed, or need support for systems that are already running.",
+  lede: "Five ways to work with us. Start at whichever stage fits: many clients begin with a discovery workshop; others arrive with a design already agreed, or need support for a data platform that is already running.",
 };
 
 export const engagements = [
   {
     no: "01",
     name: "Discovery Workshop",
-    purpose: "Align on the business goals, the systems involved and the priorities.",
-    bring: "The people who own the process and the systems",
+    purpose: "Align on the business goals, the data involved and the priorities.",
+    bring: "The people who own the process and the data",
     leave: "A prioritised set of opportunities and a shared view of success",
   },
   {
     no: "02",
     name: "Architecture Assessment",
-    purpose: "Review what you have today and pinpoint the gaps that matter.",
-    bring: "Access to systems, documentation and their owners",
+    purpose: "Review your data estate as it is today and pinpoint the gaps that matter.",
+    bring: "Access to systems, documentation and data owners",
     leave: "A current-state map, the gaps that matter, and a recommended target architecture",
   },
   {
     no: "03",
     name: "Proof of Value",
-    purpose: "Prove an outcome on your own systems and data before committing to scale.",
-    bring: "A defined use case and access to what it needs",
+    purpose: "Prove an outcome on your own data before committing to scale.",
+    bring: "A defined use case and access to the data it needs",
     leave: "A working result and the evidence to decide whether to proceed",
   },
   {
     no: "04",
     name: "Design & Delivery",
-    purpose: "Design, build, migrate and integrate: the implementation itself.",
+    purpose: "Design and build pipelines, platforms, models and AI: the implementation itself.",
     bring: "A decision to proceed and a named owner on your side",
-    leave: "Working, documented systems in your environment",
+    leave: "Working, documented data systems in your environment",
   },
   {
     no: "05",
     name: "Operate & Support",
-    purpose: "Administer, maintain and support what is running.",
+    purpose: "Run, monitor and support the data platform and what depends on it.",
     bring: "Access and an agreed way to raise issues",
-    leave: "Systems that stay maintained, monitored and supported",
+    leave: "Pipelines, models and reports that stay maintained and supported",
   },
 ];
 
 export const contact = {
-  heading: "Tell us what needs to work better.",
-  text: "Whether it is one system or several, describe the problem. We will tell you honestly whether we can help, and where we would start.",
+  heading: "Tell us about your data.",
+  text: "Where it lives, what you need from it, and what is getting in the way. We will tell you honestly whether we can help, and where we would start.",
 };
 
 /* ─── Capabilities page ───────────────────────────────────── */
@@ -697,9 +649,8 @@ export const contact = {
 export const capabilitiesPage = {
   title: "Capabilities · Resiper Labs",
   description:
-    "Infrastructure and networks, cyber security, applications and enterprise systems, data and analytics, AI and automation, and connected industrial systems.",
-  heading: "Six capability areas across enterprise technology.",
+    "Data management, data consolidation, data platforms and Fabric Data Warehouse, semantic layer and analytics, AI on data, and IoT and real-time data.",
+  heading: "Six data specialisms, from raw data to AI.",
   intro:
-    "Each area stands on its own, and most engagements start with one. When a problem crosses areas, we engineer the pieces to work together.",
-  lifecycle: ["Design", "Build", "Migrate", "Integrate", "Support"],
+    "Each capability stands on its own, and many engagements start with one. Together they cover the full journey from scattered data to decisions, analytics and AI.",
 };

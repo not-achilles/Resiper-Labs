@@ -1,0 +1,140 @@
+---
+import { foundation } from "../content/site";
+import SectionRule from "./SectionRule.astro";
+---
+
+<section
+  id="foundation"
+  class="section found"
+  data-section="04"
+  data-label="Why the foundation matters"
+  aria-labelledby="found-title"
+>
+  <div class="page">
+    <SectionRule no="04" title="Why the foundation matters" aside="Data first, then AI" />
+
+    <div class="grid found__intro">
+      <h2 id="found-title" class="display found__title" data-reveal>
+        {foundation.heading}
+      </h2>
+      <p class="found__lede" data-reveal style="--reveal-i:1">
+        {foundation.lede}
+      </p>
+    </div>
+
+    <table class="found__table">
+      <caption class="visually-hidden">
+        Working without a data foundation compared with working with one
+      </caption>
+      <thead>
+        <tr class="mono-s">
+          <th scope="col">Without a data foundation</th>
+          <th scope="col">
+            <span class="found__with">With a data foundation</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {foundation.rows.map(([without, withIt], i) => (
+          <tr data-reveal style={`--reveal-i:${i}`}>
+            <td class="found__without">{without}</td>
+            <td class="found__withcell display">{withIt}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .found__intro {
+    margin-block: var(--s-8) var(--s-7);
+    row-gap: var(--s-4);
+    align-items: end;
+  }
+  .found__title {
+    grid-column: 1 / span 7;
+    font-size: var(--fs-display-l);
+    line-height: var(--lh-display);
+    letter-spacing: -0.025em;
+    font-weight: 340;
+  }
+  .found__lede {
+    grid-column: 8 / -1;
+    color: var(--graphite);
+  }
+
+  .found__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .found__table thead th {
+    text-align: start;
+    font-weight: 400;
+    color: var(--graphite);
+    padding: 0 var(--gutter) var(--s-3) 0;
+    border-block-end: var(--hair) solid var(--ink);
+  }
+  .found__with {
+    color: var(--signal-text);
+  }
+  .found__table td {
+    vertical-align: top;
+    padding: var(--s-5) var(--gutter) var(--s-5) 0;
+    border-block-end: var(--hair) solid var(--rule);
+  }
+  .found__without {
+    color: var(--graphite);
+    text-decoration: line-through;
+    text-decoration-color: var(--rule-strong);
+    text-decoration-thickness: 1px;
+  }
+  .found__withcell {
+    position: relative;
+    padding-inline-start: 1.6rem !important;
+    font-size: 1.35rem;
+    line-height: 1.3;
+  }
+  .found__withcell::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(var(--s-5) + 0.55rem);
+    width: 0.6rem;
+    height: 0.6rem;
+    background: var(--signal);
+  }
+
+  @media (max-width: 47.99em) {
+    .found__title,
+    .found__lede {
+      grid-column: 1 / -1;
+    }
+    .found__table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .found__table,
+    .found__table tbody,
+    .found__table tr,
+    .found__table td {
+      display: block;
+      width: 100%;
+    }
+    .found__table tr {
+      padding-block: var(--s-4);
+      border-block-end: var(--hair) solid var(--rule);
+    }
+    .found__table td {
+      border: 0;
+      padding: var(--s-1) 0;
+    }
+    .found__withcell::before {
+      top: 0.85rem;
+    }
+  }
+</style>

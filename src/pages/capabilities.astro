@@ -1,8 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
-import AreaGlyph from "../components/AreaGlyph.astro";
+import JourneyGlyph from "../components/JourneyGlyph.astro";
 import SectionRule from "../components/SectionRule.astro";
-import { capabilitiesPage, pillarByNo, pillars } from "../content/site";
+import { capabilities, capabilitiesPage, capByNo } from "../content/site";
 import { url } from "../lib/url";
 ---
 
@@ -15,24 +15,11 @@ import { url } from "../lib/url";
           {capabilitiesPage.heading}
         </h1>
         <p class="lede cap-hero__intro">{capabilitiesPage.intro}</p>
-        <p class="cap-hero__cycle mono">
-          <span class="muted cap-hero__cycle-k">In every area</span>
-          {capabilitiesPage.lifecycle.map((s, i) => (
-            <span class="cap-hero__step">
-              {s}
-              {i < capabilitiesPage.lifecycle.length - 1 && (
-                <span class="cap-hero__dot" aria-hidden="true">
-                  ·
-                </span>
-              )}
-            </span>
-          ))}
-        </p>
       </div>
 
-      <nav class="jump" aria-label="Capability areas">
+      <nav class="jump" aria-label="Capabilities">
         <ol>
-          {pillars.map((p) => (
+          {capabilities.map((p) => (
             <li>
               <a href={`#${p.slug}`} class="jump__link">
                 <span class="jump__no mono">{p.no}</span>{" "}
@@ -46,7 +33,7 @@ import { url } from "../lib/url";
     </div>
   </section>
 
-  {pillars.map((p) => (
+  {capabilities.map((p) => (
     <section
       id={p.slug}
       class="section area"
@@ -55,7 +42,7 @@ import { url } from "../lib/url";
       aria-labelledby={`${p.slug}-title`}
     >
       <div class="page">
-        <SectionRule no={p.no} title={p.name} aside={`Capability area ${p.no} of 06`} />
+        <SectionRule no={p.no} title={p.name} aside={`Capability ${p.no} of 06`} />
         <div class="grid area__grid">
           <div class="area__side">
             <h2 id={`${p.slug}-title`} class="display area__title" data-reveal>
@@ -65,17 +52,14 @@ import { url } from "../lib/url";
               {p.line}
             </p>
             <div class="area__glyph">
-              <AreaGlyph active={[p.no]} related={p.related.map((r) => r.no)} />
-              <p class="mono-s muted area__legend">
-                <span class="area__legend-on" aria-hidden="true" /> This area
-                <span class="area__legend-rel" aria-hidden="true" /> Often combined with
-              </p>
+              <p class="mono-s muted">Where it sits in the data journey</p>
+              <JourneyGlyph place={p.place} />
             </div>
           </div>
 
           <div class="area__main">
             <div class="area__block">
-              <h3 class="mono-s muted">Problem area</h3>
+              <h3 class="mono-s muted">The business problem</h3>
               <p class="area__problem display" data-reveal>
                 {p.problem}
               </p>
@@ -105,7 +89,7 @@ import { url } from "../lib/url";
             </div>
 
             <div class="area__block">
-              <h3 class="mono-s muted">Typical technology areas</h3>
+              <h3 class="mono-s muted">Typical scope</h3>
               <p class="area__tech">
                 {p.keywords.map((k, i) => (
                   <span class="area__techk">
@@ -118,14 +102,14 @@ import { url } from "../lib/url";
                   </span>
                 ))}
               </p>
-              {p.platforms && <p class="area__platforms mono-s">Platforms: {p.platforms}</p>}
+              <p class="area__platforms mono-s">Technologies: {p.tech}</p>
             </div>
 
             <div class="area__block">
-              <h3 class="mono-s muted">Often combined with</h3>
+              <h3 class="mono-s muted">Connects to</h3>
               <ul class="area__related">
                 {p.related.map((r) => {
-                  const c = pillarByNo(r.no);
+                  const c = capByNo(r.no);
                   return (
                     <li>
                       <a class="link area__rlink" href={`#${c.slug}`}>
@@ -137,17 +121,14 @@ import { url } from "../lib/url";
                 })}
               </ul>
               <p class="mono-s muted area__note">
-                Combined only when the problem needs it. This area is also engaged on its own.
+                Combined only when the problem needs it. This capability is also engaged on its own.
               </p>
             </div>
 
-            <div class="area__block">
-              <h3 class="mono-s muted">Typical starting points</h3>
-              <ul class="area__starts">
-                {p.starts.map((s) => (
-                  <li>{s}</li>
-                ))}
-              </ul>
+            <div class="area__block area__example">
+              <h3 class="mono-s area__example-k">Illustrative example</h3>
+              <p class="display area__example-title">{p.example.title}</p>
+              <p class="area__example-text">{p.example.text}</p>
             </div>
           </div>
         </div>
@@ -158,7 +139,7 @@ import { url } from "../lib/url";
   <section class="section cap-next" data-section="—" data-label="Next">
     <div class="page grid">
       <p class="display cap-next__text">
-        Not sure which area the problem sits in? Working that out is usually the first thing we do
+        Not sure where your data problem sits? Working that out is usually the first thing we do
         together.
       </p>
       <p class="cap-next__links">
@@ -199,24 +180,6 @@ import { url } from "../lib/url";
   }
   .cap-hero__intro {
     grid-column: 1 / span 6;
-  }
-  .cap-hero__cycle {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-2) 0.9em;
-    padding-block-start: var(--s-3);
-    border-block-start: var(--hair) solid var(--rule);
-  }
-  .cap-hero__cycle-k {
-    margin-inline-end: var(--s-4);
-  }
-  .cap-hero__step {
-    white-space: nowrap;
-  }
-  .cap-hero__dot {
-    margin-inline-start: 0.9em;
-    color: var(--signal);
   }
 
   .jump {
@@ -284,25 +247,6 @@ import { url } from "../lib/url";
     gap: var(--s-3);
     padding-block-start: var(--s-4);
     border-block-start: var(--hair) solid var(--rule);
-  }
-  .area__legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--s-2);
-  }
-  .area__legend-on,
-  .area__legend-rel {
-    display: inline-block;
-    width: 0.7rem;
-    height: 0.7rem;
-  }
-  .area__legend-on {
-    background: var(--signal);
-  }
-  .area__legend-rel {
-    margin-inline-start: var(--s-3);
-    border: 1.25px solid var(--ink);
   }
 
   .area__main {
@@ -389,18 +333,21 @@ import { url } from "../lib/url";
     letter-spacing: 0.02em;
   }
 
-  .area__starts li {
-    position: relative;
-    padding-inline-start: 1.4em;
-    padding-block: 0.3em;
-    font-size: var(--fs-small);
+  .area__example {
+    padding: var(--s-5);
+    border: var(--hair) dashed var(--rule-strong);
   }
-  .area__starts li::before {
-    content: "→";
-    position: absolute;
-    left: 0;
+  .area__example-k {
     color: var(--signal-text);
-    font-family: var(--font-mono);
+  }
+  .area__example-title {
+    font-size: var(--fs-display-s);
+    line-height: 1.2;
+    margin-block-end: var(--s-2);
+  }
+  .area__example-text {
+    color: var(--graphite);
+    max-width: 44rem;
   }
 
   .cap-next__text {
