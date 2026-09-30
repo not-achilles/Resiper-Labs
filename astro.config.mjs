@@ -1,9 +1,9 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 
-// Hosting: GitHub Pages project site at https://<owner>.github.io/Resiper-Labs/
-// (owner decision, 2026-09-27). To move to a custom domain later, set
-// SITE_URL=https://resiperlabs.com and SITE_BASE=/ in the deploy workflow.
+// Hosting: GitHub Pages on the custom domain https://resiperlabs.com (owner
+// decision, 2026-09-30). The deploy workflow sets SITE_URL and SITE_BASE=/;
+// the local default keeps the /Resiper-Labs sub-path so base handling stays tested.
 /** @type {Record<string, string | undefined>} */
 const env = /** @type {any} */ (globalThis).process?.env ?? {};
 const SITE_URL = env["SITE_URL"];
