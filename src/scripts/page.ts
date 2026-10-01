@@ -3,6 +3,7 @@
  * content is visible and all sections are reachable.
  *  - reveal: adds .is-in to [data-reveal] / [data-draw] as they enter view
  *  - readout: the fixed instrument label showing the current section
+ *  - masthead: fixed-header state, active nav link and the mobile menu
  */
 
 const reveal = (): void => {
@@ -64,6 +65,84 @@ const readout = (): void => {
   };
   window.addEventListener("scroll", request, { passive: true });
   window.addEventListener("resize", request);
+  update();
+};
+
+/**
+ * Fixed header: shows its rule once the page scrolls, publishes its height
+ * for anchor offsets, marks the nav link for the section in view, and runs
+ * the narrow-screen Menu toggle.
+ */
+const masthead = (): void => {
+  const header = document.querySelector<HTMLElement>("[data-masthead]");
+  if (!header) return;
+  const root = document.documentElement;
+  const toggle = header.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const toggleLabel = header.querySelector<HTMLElement>("[data-nav-toggle-label]");
+  const nav = header.querySelector<HTMLElement>("[data-nav]");
+  const links = Array.from(header.querySelectorAll<HTMLAnchorElement>("[data-nav-target]"));
+  const targets = links
+    .map((a) => document.getElementById(a.dataset["navTarget"] ?? ""))
+    .filter((el): el is HTMLElement => el !== null);
+
+  const setOpen = (open: boolean): void => {
+    header.classList.toggle("is-open", open);
+    toggle?.setAttribute("aria-expanded", String(open));
+    if (toggleLabel) toggleLabel.textContent = open ? "Close" : "Menu";
+  };
+
+  const measure = (): void => {
+    if (header.classList.contains("is-open")) return;
+    root.style.setProperty("--header-offset", `${header.offsetHeight}px`);
+  };
+
+  let ticking = false;
+  const update = (): void => {
+    ticking = false;
+    header.classList.toggle("is-scrolled", window.scrollY > 4);
+
+    // The section whose top has passed 40% of the viewport is "current"
+    const probe = window.innerHeight * 0.4;
+    let current: HTMLElement | null = null;
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= probe) current = t;
+    }
+    // Once the last target has scrolled fully past, nothing is current
+    if (current && current.getBoundingClientRect().bottom < header.offsetHeight) current = null;
+    for (const a of links) {
+      if (current && a.dataset["navTarget"] === current.id)
+        a.setAttribute("aria-current", "location");
+      else a.removeAttribute("aria-current");
+    }
+  };
+  const request = (): void => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+
+  if (toggle && nav) {
+    toggle.hidden = false;
+    toggle.addEventListener("click", () => setOpen(!header.classList.contains("is-open")));
+    nav.addEventListener("click", (e) => {
+      if ((e.target as Element).closest("a")) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && header.classList.contains("is-open")) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    window.matchMedia("(min-width: 48em)").addEventListener("change", (mq) => {
+      if (mq.matches) setOpen(false);
+    });
+  }
+
+  new ResizeObserver(measure).observe(header);
+  window.addEventListener("scroll", request, { passive: true });
+  window.addEventListener("resize", request);
+  measure();
   update();
 };
 
@@ -130,4 +209,5 @@ const cycle = (): void => {
 
 reveal();
 readout();
+masthead();
 cycle();

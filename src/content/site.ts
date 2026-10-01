@@ -44,6 +44,11 @@ export const nav = [
   { href: "/#contact", label: "Contact" },
 ];
 
+/** source: owner, 2026-10-01 (exact wording) */
+export const footer = {
+  closing: "Tell us about your Data",
+};
+
 /* ─── Capabilities ────────────────────────────────────────── */
 
 export type CapNo = "01" | "02" | "03" | "04" | "05" | "06";

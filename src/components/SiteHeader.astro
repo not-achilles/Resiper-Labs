@@ -2,25 +2,53 @@
 import { nav } from "../content/site";
 import Wordmark from "./Wordmark.astro";
 import { url } from "../lib/url";
+
+// On the home page the wordmark returns to the top; elsewhere it goes home.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const path = Astro.url.pathname.replace(/\/$/, "");
+const isHome = path === base || path === `${base}/index.html`;
+const onCapabilities = path === `${base}/capabilities`;
 ---
 
-<header class="masthead">
+<header class="masthead" data-masthead>
   <div class="page masthead__inner">
-    <a class="masthead__brand" href={url("/")} aria-label="Resiper Labs, home">
-      <Wordmark />
+    <a
+      class="masthead__brand"
+      href={isHome ? "#top" : url("/")}
+      aria-label={isHome ? "Resiper Labs, back to top" : "Resiper Labs, home"}
+      data-to-top={isHome ? "" : undefined}
+    >
+      <Wordmark size="m" />
     </a>
-    <nav class="masthead__nav" aria-label="Primary">
+    <button
+      class="masthead__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+      hidden
+      data-nav-toggle
+    >
+      <span data-nav-toggle-label>Menu</span>
+    </button>
+    <nav class="masthead__nav" id="primary-nav" aria-label="Primary" data-nav>
       <ol>
-        {nav.map((item, i) => (
-          <li>
-            <a href={url(item.href)}>
-              <span class="masthead__idx" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {nav.map((item, i) => {
+          const isCaps = item.href === "/capabilities";
+          return (
+            <li>
+              <a
+                href={url(item.href)}
+                aria-current={isCaps && onCapabilities ? "page" : undefined}
+                data-nav-target={item.href.startsWith("/#") ? item.href.slice(2) : undefined}
+              >
+                <span class="masthead__idx" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span class="masthead__label">{item.label}</span>
+              </a>
+            </li>
+          );
+        })}
       </ol>
     </nav>
   </div>
@@ -38,38 +66,55 @@ import { url } from "../lib/url";
 </header>
 
 <style>
+  /* Fixed to the top of the viewport; same paper as the page, no glass */
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--paper);
+    border-block-end: var(--hair) solid var(--rule);
+    transition: border-color var(--t-fast) var(--ease-out);
+  }
+  /* With JS, the rule appears only once the page has scrolled */
+  :global(.js) .masthead:not(.is-scrolled) {
+    border-block-end-color: transparent;
+  }
+
   .masthead__inner {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--s-3) var(--s-6);
-    padding-block: var(--s-5) var(--s-4);
+    min-height: var(--header-h);
+    padding-block: var(--s-3);
   }
 
   .masthead__brand {
-    display: inline-block;
-    padding-block: var(--s-1);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 
   .masthead__nav ol {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s-1) clamp(var(--s-4), 2.4vw, var(--s-7));
+    gap: 0 clamp(var(--s-5), 2.6vw, var(--s-7));
   }
 
   .masthead__nav a {
     display: inline-flex;
-    gap: 0.55em;
+    gap: 0.6em;
     align-items: baseline;
-    padding-block: var(--s-2);
+    padding-block: var(--s-3);
     font-family: var(--font-mono);
-    font-size: var(--fs-mono);
+    font-size: var(--fs-nav);
+    font-weight: 500;
     letter-spacing: var(--track-mono);
     text-transform: uppercase;
+    color: var(--ink);
     background-image: linear-gradient(currentColor, currentColor);
     background-repeat: no-repeat;
-    background-position: 0 calc(100% - 4px);
+    background-position: 0 calc(100% - 6px);
     background-size: 0 var(--hair);
     transition: background-size var(--t-med) var(--ease-out);
   }
@@ -77,9 +122,85 @@ import { url } from "../lib/url";
   .masthead__nav a:focus-visible {
     background-size: 100% var(--hair);
   }
+  /* Current page or section: a resting underline in signal */
+  .masthead__nav a[aria-current] {
+    background-image: linear-gradient(var(--signal), var(--signal));
+    background-size: 100% 2px;
+  }
 
   .masthead__idx {
     color: var(--graphite);
+    font-weight: 400;
+  }
+  .masthead__nav a[aria-current] .masthead__idx {
+    color: var(--signal-text);
+  }
+
+  /* Menu toggle: plain mono text, narrow screens only */
+  .masthead__toggle {
+    display: none;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0 0 var(--s-4);
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--fs-nav);
+    font-weight: 500;
+    letter-spacing: var(--track-mono);
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* Mid widths: drop the index numbers so the row stays on one line */
+  @media (max-width: 63.99em) {
+    .masthead__idx {
+      display: none;
+    }
+  }
+
+  /* Narrow screens with JS: the nav collapses behind a Menu toggle */
+  @media (max-width: 47.99em) {
+    :global(.js) .masthead__toggle {
+      display: inline-flex;
+    }
+    :global(.js) .masthead__inner {
+      flex-wrap: wrap;
+    }
+    :global(.js) .masthead__nav {
+      display: none;
+      flex-basis: 100%;
+    }
+    :global(.js) .masthead.is-open .masthead__nav {
+      display: block;
+    }
+    :global(.js) .masthead__nav ol {
+      flex-direction: column;
+      gap: 0;
+      padding-block: var(--s-2) var(--s-3);
+      border-block-start: var(--hair) solid var(--rule);
+    }
+    :global(.js) .masthead__nav li + li {
+      border-block-start: var(--hair) solid var(--rule);
+    }
+    :global(.js) .masthead__nav a {
+      display: flex;
+      min-height: 48px;
+      align-items: center;
+      background-position: 0 calc(100% - 10px);
+    }
+    :global(.js) .masthead__nav .masthead__idx {
+      display: inline;
+    }
+
+    /* Without JS the header scrolls away, so the wrapped nav never covers content */
+    :global(html:not(.js)) .masthead {
+      position: static;
+    }
+    :global(html:not(.js)) .masthead__inner {
+      flex-wrap: wrap;
+    }
   }
 
   /* Instrument readout: current section, fixed, desktop only */
@@ -130,20 +251,6 @@ import { url } from "../lib/url";
     }
     :global(.is-on-plate) .readout {
       color: var(--plate-graphite);
-    }
-  }
-
-  @media (max-width: 37.5em) {
-    .masthead__inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--s-2);
-    }
-    .masthead__nav ol {
-      column-gap: var(--s-4);
-    }
-    .masthead__idx {
-      display: none;
     }
   }
 </style>

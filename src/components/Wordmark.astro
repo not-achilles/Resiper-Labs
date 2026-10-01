@@ -3,7 +3,7 @@
  * Provisional typographic wordmark (no logo mark until one is approved). Serif name, mono descriptor.
  */
 interface Props {
-  size?: "s" | "l";
+  size?: "s" | "m" | "l";
 }
 const { size = "s" } = Astro.props;
 ---
@@ -32,6 +32,15 @@ const { size = "s" } = Astro.props;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     line-height: 1;
+  }
+  /* Header size: the site's primary brand identifier */
+  .wordmark--m .wordmark__name {
+    font-size: var(--fs-wordmark);
+    letter-spacing: -0.02em;
+  }
+  .wordmark--m .wordmark__labs {
+    font-size: var(--fs-nav);
+    font-weight: 500;
   }
   .wordmark--l .wordmark__name {
     font-size: clamp(2.5rem, 1.5rem + 5vw, 6.5rem);

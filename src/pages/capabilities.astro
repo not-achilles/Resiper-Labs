@@ -231,7 +231,7 @@ import { url } from "../lib/url";
     display: grid;
     gap: var(--s-5);
     position: sticky;
-    top: var(--s-6);
+    top: calc(var(--header-offset, var(--header-h)) + var(--s-6));
   }
   .area__title {
     font-size: var(--fs-display-m);

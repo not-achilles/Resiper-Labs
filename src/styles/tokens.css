@@ -65,6 +65,8 @@
   --fs-small: 0.9375rem;
   --fs-mono: 0.75rem;
   --fs-mono-s: 0.6875rem;
+  --fs-nav: 0.875rem;
+  --fs-wordmark: clamp(1.75rem, 1.55rem + 0.6vw, 2.125rem);
 
   --lh-display: 1;
   --lh-tight: 1.15;
@@ -89,6 +91,9 @@
   --page-max: 1520px;
   --margin: clamp(1rem, 0.2rem + 3.6vw, 4rem);
   --gutter: clamp(1rem, 0.6rem + 1.2vw, 2rem);
+
+  /* Fixed header: minimum height, refined at runtime from the real header */
+  --header-h: 4.75rem;
 
   /* Lines */
   --hair: 1px;

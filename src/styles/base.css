@@ -9,7 +9,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: var(--s-6);
+  /* Anchored sections land below the fixed header */
+  scroll-padding-top: calc(var(--header-offset, var(--header-h)) + var(--s-5));
 }
 
 body {
