@@ -109,6 +109,10 @@ const masthead = (): void => {
     }
     // Once the last target has scrolled fully past, nothing is current
     if (current && current.getBoundingClientRect().bottom < header.offsetHeight) current = null;
+    // At the foot of the page the last target (the footer) is current, even
+    // though it is too short to reach the probe line
+    const atEnd = window.innerHeight + window.scrollY >= root.scrollHeight - 2;
+    if (atEnd && targets.length > 0) current = targets[targets.length - 1]!;
     for (const a of links) {
       if (current && a.dataset["navTarget"] === current.id)
         a.setAttribute("aria-current", "location");

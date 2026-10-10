@@ -3,14 +3,16 @@ import { company, footer, nav } from "../content/site";
 import OwnerPending from "./OwnerPending.astro";
 import { url } from "../lib/url";
 
-// Email and phone live in the Contact section; the footer does not repeat them
-// (owner decision, 2026-10-01).
+// The footer is the site's only contact point: there is no separate Contact
+// section (owner decision, 2026-10-10). Nav "Contact" links land here.
 const year = new Date().getFullYear();
 ---
 
-<footer class="colophon">
+<footer class="colophon" id="contact" aria-labelledby="contact-title">
   <div class="page">
-    <p class="colophon__close display">{footer.closing}</p>
+    <h2 id="contact-title" class="colophon__close display">
+      {footer.closing}
+    </h2>
 
     <div class="grid colophon__grid">
       <dl class="colophon__facts">
@@ -21,6 +23,34 @@ const year = new Date().getFullYear();
         <div>
           <dt class="mono-s muted">Registered office</dt>
           <dd>{company.registeredOffice ?? <OwnerPending what="registered office address" />}</dd>
+        </div>
+        <div>
+          <dt class="mono-s muted">Email</dt>
+          <dd>
+            <ul class="colophon__list">
+              {company.emails.map((e) => (
+                <li>
+                  <a class="link" href={`mailto:${e.address}`}>
+                    {e.address}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt class="mono-s muted">Phone</dt>
+          <dd>
+            <ul class="colophon__list">
+              {company.phones.map((ph) => (
+                <li>
+                  <a class="link" href={`tel:${ph.tel}`}>
+                    {ph.display}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </dd>
         </div>
       </dl>
 
@@ -58,6 +88,7 @@ const year = new Date().getFullYear();
   .colophon__close {
     padding-block-start: var(--s-6);
     border-block-start: var(--hair) solid var(--ink);
+    margin: 0;
     font-size: var(--fs-display-l);
     line-height: var(--lh-display);
     letter-spacing: -0.028em;
@@ -79,6 +110,14 @@ const year = new Date().getFullYear();
   }
   .colophon__facts dd {
     margin: var(--s-1) 0 0;
+  }
+  .colophon__list {
+    display: grid;
+    gap: var(--s-1);
+    justify-items: start;
+  }
+  .colophon__list a {
+    overflow-wrap: anywhere;
   }
 
   .colophon__nav {

@@ -30,7 +30,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   /* Colour: paper / ink / graphite / rule + one signal */
   --paper: #f3f1ec;
@@ -105,44 +105,4 @@
   --t-med: 480ms;
   --t-slow: 900ms;
   --t-draw: 1800ms;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0f1012;
-    --paper-deep: #151619;
-    --ink: #ebe9e3;
-    --graphite: #9a9ca3;
-    --rule: #26282c;
-    --rule-strong: #43464c;
-    --signal: #ff5b3d;
-    --signal-text: #ff7a60;
-    --selection: #ff5b3d;
-    --selection-ink: #0f1012;
-
-    --plate: #18191c;
-    --plate-ink: #ebe9e3;
-    --plate-graphite: #9a9ca3;
-    --plate-rule: #2e3035;
-    --plate-signal: #ff5b3d;
-  }
-}
-
-:root[data-theme="dark"] {
-  --paper: #0f1012;
-  --paper-deep: #151619;
-  --ink: #ebe9e3;
-  --graphite: #9a9ca3;
-  --rule: #26282c;
-  --rule-strong: #43464c;
-  --signal: #ff5b3d;
-  --signal-text: #ff7a60;
-  --selection: #ff5b3d;
-  --selection-ink: #0f1012;
-
-  --plate: #18191c;
-  --plate-ink: #ebe9e3;
-  --plate-graphite: #9a9ca3;
-  --plate-rule: #2e3035;
-  --plate-signal: #ff5b3d;
 }

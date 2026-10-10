@@ -644,11 +644,6 @@ export const engagements = [
   },
 ];
 
-export const contact = {
-  heading: "Tell us about your data.",
-  text: "Where it lives, what you need from it, and what is getting in the way. We will tell you honestly whether we can help, and where we would start.",
-};
-
 /* ─── Capabilities page ───────────────────────────────────── */
 
 export const capabilitiesPage = {
