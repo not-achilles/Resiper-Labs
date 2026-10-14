@@ -558,7 +558,11 @@ export const examples = {
   ],
 };
 
-/** source: leadership approval to name Apollo Tyres as a client (2026-09-28). Name only. */
+/**
+ * source: leadership approval to name Apollo Tyres as a client (2026-09-28).
+ * Owner approved showing the logo instead of the text name (2026-10-14).
+ * Logo only: no scope, metrics or quote.
+ */
 export const clients = {
   label: "Client",
   names: ["Apollo Tyres"],

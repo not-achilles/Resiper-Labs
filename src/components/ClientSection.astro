@@ -1,8 +1,11 @@
 ---
 /**
  * Client reference. Leadership-approved (2026-09-28): the client may be
- * named. Name only: no logo, scope, metrics or quote.
+ * named; owner approved the logo in place of the text (2026-10-14).
+ * Logo only (the "A" emblem, shown in the client's own colours at the owner's
+ * request): no scope, metrics or quote.
  */
+import apolloLogo from "../assets/clients/apollo-tyres.png";
 import { clients } from "../content/site";
 import SectionRule from "./SectionRule.astro";
 ---
@@ -22,8 +25,16 @@ import SectionRule from "./SectionRule.astro";
       </h2>
       <ul class="clients__list">
         {clients.names.map((n) => (
-          <li class="display clients__name" data-reveal>
-            {n}
+          <li class="clients__name" data-reveal>
+            <img
+              class="clients__logo"
+              src={apolloLogo.src}
+              width={apolloLogo.width}
+              height={apolloLogo.height}
+              alt={n}
+              loading="lazy"
+              decoding="async"
+            />
           </li>
         ))}
       </ul>
@@ -45,11 +56,11 @@ import SectionRule from "./SectionRule.astro";
   .clients__list {
     grid-column: 4 / -1;
   }
-  .clients__name {
-    font-size: var(--fs-display-m);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    font-weight: 360;
+  .clients__logo {
+    display: block;
+    inline-size: 8rem;
+    max-inline-size: 100%;
+    block-size: auto;
   }
   @media (max-width: 47.99em) {
     .clients__k,
