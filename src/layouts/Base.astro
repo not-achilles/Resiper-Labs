@@ -14,6 +14,10 @@ interface Props {
 }
 
 const { title = meta.title, description = meta.description } = Astro.props;
+const canonical =
+  Astro.site && !Astro.url.pathname.includes("/404")
+    ? new URL(Astro.url.pathname, Astro.site).href
+    : undefined;
 
 // Only confirmed properties. `url` and `address` are added
 // once the owner confirms them. No CIN (owner decision).
@@ -48,6 +52,7 @@ const organization = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f3f1ec" />
+    {canonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml" />
     <link rel="preload" href={newsreaderFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={hankenFont} as="font" type="font/woff2" crossorigin />

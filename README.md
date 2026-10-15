@@ -2,7 +2,7 @@
 
 Website for **Resiper Labs Private Limited**, a specialist data engineering company: data management, data consolidation, data platforms (including Microsoft Fabric Data Warehouse), semantic layer and analytics, AI on data, and IoT and real-time data.
 
-Live: https://resiperlabs.com
+Live: https://www.resiperlabs.com
 
 ## Stack
 
